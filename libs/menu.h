@@ -15,7 +15,6 @@
 
 int menu(tp_player *jogador) {
 
-  setlocale(LC_ALL, "Portuguese");
   asciiart();
   printf("#################################################\n"
          "#                                               #\n" 

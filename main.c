@@ -3,10 +3,9 @@
 #include <locale.h>
 
 
-
 int main() {
 
-    
+    setlocale(LC_ALL,"");
 
     tp_player player; //Jogador
 
