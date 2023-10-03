@@ -5,13 +5,26 @@
 #include "monstro.h"
 #include <stdio.h>
 #include <windows.h>
+#include <locale.h>
 
 #include "arte.h"
 
+
+
+
+
 int menu(tp_player *jogador) {
+
+  setlocale(LC_ALL, "Portuguese");
   asciiart();
-  printf(" #################################################\n # #\n # #\n # "
-         "#\n # Digite: 1- Novo Jogo 2- Encerrar Jogo #\n # #\n # #\n # #\n "
+  printf("#################################################\n"
+         "#                                               #\n" 
+         "#                                               #\n" 
+         "#                                               #\n" 
+         "#     Digite: 1- Novo Jogo 2- Encerrar Jogo     #\n" 
+         "#                                               #\n" 
+         "#                                               #\n" 
+         "#                                               #\n" 
          "#################################################\n\n\n");
 
   int i;

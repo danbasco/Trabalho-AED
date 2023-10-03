@@ -20,6 +20,6 @@
   - [𝙃𝙚𝙣𝙧𝙞𝙦𝙪𝙚 𝘽𝙖𝙧𝙧𝙤𝙨](https://github.com/Rickdebarro)
   - [𝘿𝙖𝙣𝙞𝙚𝙡 𝙑𝙖𝙨𝙘𝙤𝙣𝙘𝙚𝙡𝙤𝙨](https://github.com/danbasco)
   - [𝘼𝙣𝙙𝙧𝙚 𝙍𝙚𝙯𝙚𝙣𝙙𝙚](https://github.com/Andre-D-Rez)
-  - [𝙂𝙪i𝙡𝙝𝙚𝙧𝙢𝙚 𝙍𝙞𝙤𝙨](https://github.com/guilhermerios21)
+  - [𝙂𝙪𝙞𝙡𝙝𝙚𝙧𝙢𝙚 𝙍𝙞𝙤𝙨](https://github.com/guilhermerios21)
 
 

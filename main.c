@@ -2,9 +2,11 @@
 #include <stdio.h>
 #include <locale.h>
 
+
+
 int main() {
 
-    setlocale(LC_ALL, "Portuguese");
+    
 
     tp_player player; //Jogador
 
