@@ -41,7 +41,7 @@ int main() {
         printar_monstro(monstro, &fila_monstro);
         //verificando todos os ataques possiveis do monstro (debug)
         //imprime_acoes_monstro(fila_monstro);
-
+        checar_custo(&player, cartas_jogador[3]);
 
     }
 

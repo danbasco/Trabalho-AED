@@ -39,28 +39,20 @@ void imprime_player(tp_player jogador, tp_cartas *carta) {
   imprime_cartas(carta);
 }
 
-int checar_custo(tp_player *jogador, tp_pilha *e) {
+int checar_custo(tp_player *jogador, tp_cartas e) {
 
-  tp_cartas j;
-
-  top(e, &j);
-  if (j.mana > jogador->mana)
-    return 0;
+  if (e.mana > jogador->mana) return 0;
   return 1;
 }
 
-void usar_carta(tp_pilha *cartas_jogador, tp_player *jogador) {
-  tp_cartas e;
+void usar_carta(tp_cartas cartas_jogador, tp_player *jogador) {
 
   if (!checar_custo(jogador, cartas_jogador)) {
     printf("Mana insuficiente\n");
   } else {
 
-    if (pilha_vazia(cartas_jogador)) {
-    }
-    pop(cartas_jogador, &e);
-    jogador->mana = jogador->mana - e.mana;
-    switch (e.tipodacarta) {
+    jogador->mana = jogador->mana - cartas_jogador.mana;
+    switch (cartas_jogador.tipodacarta) {
     case 0:
       // monstro->vida -= e.power;
       break;
