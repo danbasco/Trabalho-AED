@@ -5,7 +5,7 @@
 #include <string.h>
 #include <time.h>
 
-#include <sqlite3.h>
+#include "connectdb.h"
 
 #define MAX 100
 
@@ -15,21 +15,6 @@ typedef struct {
                    // 2)
   int power, mana, level;
 } tp_cartas;
-
-// DATABASE
-
-int verifyDB(sqlite3 **db){
-  int rc = sqlite3_open("./data/cartas.db", db);
-
-  if (rc != SQLITE_OK) {
-        
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(*db));
-        sqlite3_close(*db);
-        return 0;
-  }
-  return 1;
-}
-
 
 // LIB DE PILHA
 
@@ -78,20 +63,10 @@ int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 
 // cartas do deck
 
-int inserir_pilha(tp_pilha *pilha) {
-  char *err_msg = 0;
-  sqlite3 *db;
-  if(!verifyDB(&db)){
-    printf("Ocorreu algum erro ao inicializar a DB.");
-    return 0;
-  }
+void criar_cartas(tp_pilha *pilha){
+ 
+ tp_cartas cartas[12];
 
-  tp_cartas cartas[12];
-  
-  char *sql = "SELECT * FROM cartas";
-  
-  
-/*
   // cartas de ataque
 
   strcpy(cartas[0].nome, "Bola de Fogo");
@@ -128,8 +103,8 @@ int inserir_pilha(tp_pilha *pilha) {
 
   strcpy(cartas[6].nome, "Obrigado Soussa");
   cartas[6].tipodacarta = 1;
-  cartas[6].mana = 5;
-  cartas[6].power = 20;
+  cartas[5].mana = 5;
+  cartas[5].power = 20;
 
   strcpy(cartas[7].nome, "Pato");
   cartas[7].tipodacarta = 1;
@@ -150,22 +125,23 @@ int inserir_pilha(tp_pilha *pilha) {
 
   strcpy(cartas[10].nome, "Masterizou AED");
   cartas[10].tipodacarta = 2;
-  cartas[10].mana = 20;
-  cartas[10].power = 50;
+  cartas[10].mana = 0;
+  cartas[10].power = 60;
 
   strcpy(cartas[11].nome, "Sabedoria suprema");
   cartas[11].tipodacarta = 2;
-  cartas[11].power = 60;
+  cartas[11].power = 10;
   cartas[11].mana = 10;
-*/
+
+
   // Função preencher pilha:
   srand(time(NULL));
   for (int i = 0; i < 10; i++) { // shuffle array
-
     int random = rand() % 11;
     push(pilha, cartas[random]);
   }
 }
+
 
 void imprime_cartas(tp_cartas *p) {
 
