@@ -5,14 +5,31 @@
 #include <string.h>
 #include <time.h>
 
+#include <sqlite3.h>
+
 #define MAX 100
 
 typedef struct {
   char nome[30];
-  int tipodacarta; // tipo de carta por num (0==ataque , 1==defesa , especial ==
+  int tipodacarta; // tipo de carta por num (0==ataque , 1==defesa, especial ==
                    // 2)
-  int power, mana, regmana, vida, escudo, level;
+  int power, mana, level;
 } tp_cartas;
+
+// DATABASE
+
+int verifyDB(sqlite3 **db){
+  int rc = sqlite3_open("./data/cartas.db", db);
+
+  if (rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(*db));
+        sqlite3_close(*db);
+        return 0;
+  }
+  return 1;
+}
+
 
 // LIB DE PILHA
 
@@ -61,10 +78,20 @@ int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 
 // cartas do deck
 
-void criar_cartas(tp_pilha *pilha) {
+int inserir_pilha(tp_pilha *pilha) {
+  char *err_msg = 0;
+  sqlite3 *db;
+  if(!verifyDB(&db)){
+    printf("Ocorreu algum erro ao inicializar a DB.");
+    return 0;
+  }
 
   tp_cartas cartas[12];
-
+  
+  char *sql = "SELECT * FROM cartas";
+  
+  
+/*
   // cartas de ataque
 
   strcpy(cartas[0].nome, "Bola de Fogo");
@@ -92,60 +119,48 @@ void criar_cartas(tp_pilha *pilha) {
   strcpy(cartas[4].nome, "Camisa Laranja");
   cartas[4].tipodacarta = 1;
   cartas[4].mana = 10;
-  cartas[4].escudo = 20;
+  cartas[4].power = 20;
 
   strcpy(cartas[5].nome, "Lando Lando");
   cartas[5].tipodacarta = 1;
   cartas[5].mana = 15;
-  cartas[5].escudo = 30;
+  cartas[5].power = 30;
 
   strcpy(cartas[6].nome, "Obrigado Soussa");
   cartas[6].tipodacarta = 1;
-  cartas[5].mana = 5;
-  cartas[5].escudo = 20;
+  cartas[6].mana = 5;
+  cartas[6].power = 20;
 
   strcpy(cartas[7].nome, "Pato");
   cartas[7].tipodacarta = 1;
   cartas[7].mana = 50;
-  cartas[7].escudo = 30;
+  cartas[7].power = 30;
 
   // cartas de especial
 
   strcpy(cartas[8].nome, "Lanche no garfo de ouro");
   cartas[8].tipodacarta = 2;
-  cartas[8].vida = 20;
+  cartas[8].power = 20;
   cartas[8].mana = 10;
 
   strcpy(cartas[9].nome, "Neneca no cyber");
   cartas[9].tipodacarta = 2;
-  cartas[9].vida = 50;
+  cartas[9].power = 50;
   cartas[9].mana = 30;
 
   strcpy(cartas[10].nome, "Masterizou AED");
   cartas[10].tipodacarta = 2;
-  cartas[10].mana = 0;
-  cartas[10].regmana = 60;
+  cartas[10].mana = 20;
+  cartas[10].power = 50;
 
   strcpy(cartas[11].nome, "Sabedoria suprema");
   cartas[11].tipodacarta = 2;
-  cartas[11].power = 10;
+  cartas[11].power = 60;
   cartas[11].mana = 10;
-  cartas[11].vida = 10;
-  cartas[11].escudo = 10;
-
-  // Atribuindo os niveis das cartas
-  int lvl = 1;
-  int i;
-  for (i = 0; i < 12; i++) {
-    cartas[i].level = lvl;
-    lvl++;
-    if (lvl > 4)
-      lvl = 1;
-  }
-
+*/
   // Função preencher pilha:
   srand(time(NULL));
-  for (i = 0; i < 10; i++) { // shuffle array
+  for (int i = 0; i < 10; i++) { // shuffle array
 
     int random = rand() % 11;
     push(pilha, cartas[random]);

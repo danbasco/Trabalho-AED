@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include <sqlite3.h>
+
 #define MAXF 10
 
 typedef struct {
