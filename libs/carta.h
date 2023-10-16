@@ -1,11 +1,25 @@
 #ifndef CARTA_H
 #define CARTA_H
 #include <stdio.h>
+#include <sqlite3.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-#include "connectdb.h"
+int connectDB(sqlite3 **db, int *rc){
+
+  *rc = sqlite3_open("./data/cartas.db", db);
+
+  if (*rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(*db));
+        sqlite3_close(*db);
+        return 0;
+  }
+  return 1;
+}
+
+int callback(void *, int, char **, char **);
 
 #define MAX 100
 
@@ -64,6 +78,9 @@ int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 // cartas do deck
 
 void criar_cartas(tp_pilha *pilha){
+ 
+ sqlite3 *db;
+ int rc;
  
  tp_cartas cartas[12];
 
