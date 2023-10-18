@@ -26,7 +26,6 @@ int main() {
         sacar_deck(&cartas_baralho, cartas_jogador);
 
         imprime_player(player, cartas_jogador);
-
         tp_level *levels; //caminho do jogador;
 
         levels = inicializa_level();
