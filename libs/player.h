@@ -18,18 +18,8 @@ void criarplayer(tp_player *jogador) {
   
 }
 
-void sacar_deck(tp_pilha *cartas_baralho, tp_cartas *cartas_jogador) {
 
-  tp_cartas deck;
-
-  for (int i = 0; i < 5; i++) {
-
-    pop(cartas_baralho, &deck);
-    cartas_jogador[i] = deck;
-  }
-}
-
-void imprime_player(tp_player *jogador, tp_cartas *carta) {
+void imprime_player(tp_player *jogador, tp_listad *carta) {
   printf("============================================\n");
   printf("Nome: %s\n", jogador->nome);
   printf("Vida: %d/200 \n", jogador->vida);
@@ -37,7 +27,7 @@ void imprime_player(tp_player *jogador, tp_cartas *carta) {
   printf("Escudo: %d/50 \n", jogador->escudo);
   printf("============================================\n\n");
 
-  imprime_cartas(carta);
+  imprime_listad(carta, 1);
 }
 
 int checar_custo(tp_player *jogador, tp_cartas e) {

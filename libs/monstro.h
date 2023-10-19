@@ -197,7 +197,7 @@ void printar_monstro(tp_monstro monstro, tp_fila *fila){
         printf("Próximo movimento: Defesa\n\n");
         break;
     case 2:
-        printf("Próximo movimento: Especial\n\n");
+        printf("Próximo movimento: Cura\n\n");
         break;
     default:
         break;

@@ -19,11 +19,11 @@ void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstr
       break;
 
     case 1:
-      /* code */
+      jogador->escudo += cartas_jogador.power;
       break;
 
     case 2:
-      /* code */
+      jogador->vida += cartas_jogador.power;
       break;
     default:
       break;

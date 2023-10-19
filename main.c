@@ -11,15 +11,14 @@ int main() {
     if (menu(&player)) {
 
     //Deck
-        tp_pilha cartas_baralho;
-        tp_cartas cartas_jogador[5];
+        tp_pilha cartas_baralho, cartas_descarte;
+        tp_listad *maojogador;
+        maojogador = inicializa_listad();
 
         inicializa_pilha(&cartas_baralho);
-
+        inicializa_pilha(&cartas_descarte);
         criar_cartas(&cartas_baralho);
-        sacar_deck(&cartas_baralho, cartas_jogador);
-
-        imprime_cartas(cartas_jogador);
+        sacar_deck(&cartas_baralho, maojogador);
 
         tp_level *levels; //caminho do jogador;
 

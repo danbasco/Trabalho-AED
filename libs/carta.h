@@ -33,6 +33,7 @@ typedef struct {
   int power, mana, level;
 } tp_cartas;
 
+
 // LIB DE PILHA
 
 typedef struct {
@@ -78,6 +79,7 @@ int top(tp_pilha *p, tp_cartas *e) {
 
 int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 
+
 // cartas do deck
 
 int criar_cartas(tp_pilha *pilha){
@@ -114,19 +116,6 @@ int criar_cartas(tp_pilha *pilha){
   }
   closeDB(db);
   return 1;
-}
-
-
-void imprime_cartas(tp_cartas *p) {
-
-  printf("============================================\n");
-  printf("Cartas do jogador: \n");
-
-  for (int i = 0; i < 5; i++) {
-
-    printf("%d.: %s\n", i + 1, p[i].nome);
-  }
-  printf("============================================\n\n");
 }
 
 #endif

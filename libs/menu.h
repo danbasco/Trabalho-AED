@@ -1,5 +1,6 @@
 #ifndef menu_h
 #define menu_h
+#include "maojogador.h"
 #include "carta.h"
 #include "player.h"
 #include "monstro.h"
