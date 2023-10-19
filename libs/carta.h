@@ -90,7 +90,8 @@ int criar_cartas(tp_pilha *pilha){
   
   tp_cartas cartas[12];
 
-  sqlite3_prepare_v2(db, "select Nome, tipodacarta, power, level, mana from cartas", -1, &stmt, 0);
+
+  sqlite3_prepare_v2(db, "SELECT Nome, tipodacarta, power, level, mana FROM cartas", -1, &stmt, 0);
   // cartas de ataque
   int i = 0;
   const unsigned char* name;

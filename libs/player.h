@@ -1,6 +1,7 @@
 #ifndef player_h
 #define player_h
 #include "carta.h"
+#include "caminho.h"
 #include <stdio.h>
 
 typedef struct {
@@ -28,12 +29,12 @@ void sacar_deck(tp_pilha *cartas_baralho, tp_cartas *cartas_jogador) {
   }
 }
 
-void imprime_player(tp_player jogador, tp_cartas *carta) {
+void imprime_player(tp_player *jogador, tp_cartas *carta) {
   printf("============================================\n");
-  printf("Nome: %s\n", jogador.nome);
-  printf("Vida: %d/200 \n", jogador.vida);
-  printf("Mana: %d/50 \n", jogador.mana);
-  printf("Escudo: %d/50 \n", jogador.escudo);
+  printf("Nome: %s\n", jogador->nome);
+  printf("Vida: %d/200 \n", jogador->vida);
+  printf("Mana: %d/50 \n", jogador->mana);
+  printf("Escudo: %d/50 \n", jogador->escudo);
   printf("============================================\n\n");
 
   imprime_cartas(carta);
@@ -44,30 +45,4 @@ int checar_custo(tp_player *jogador, tp_cartas e) {
   if (e.mana > jogador->mana) return 0;
   return 1;
 }
-
-void usar_carta(tp_cartas cartas_jogador, tp_player *jogador) {
-
-  if (!checar_custo(jogador, cartas_jogador)) {
-    printf("Mana insuficiente\n");
-  } else {
-
-    jogador->mana = jogador->mana - cartas_jogador.mana;
-    switch (cartas_jogador.tipodacarta) {
-    case 0:
-      // monstro->vida -= e.power;
-      break;
-
-    case 1:
-      /* code */
-      break;
-
-    case 2:
-      /* code */
-      break;
-    default:
-      break;
-    }
-  }
-}
-
 #endif

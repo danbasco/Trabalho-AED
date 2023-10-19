@@ -67,6 +67,4 @@ int level_atual(tp_level *level){
   return level_item;
 }
 
-
-
 #endif

@@ -10,9 +10,6 @@
 #include "arte.h"
 
 
-
-
-
 int menu(tp_player *jogador) {
 
   asciiart();

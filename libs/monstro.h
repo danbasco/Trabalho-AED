@@ -103,7 +103,7 @@ int verificarvida(tp_monstro monstro){
 int criar_acoes_monstro(tp_fila *fila){
 
     acoes_monstro acoes[MAXF];
-
+    
     // Ataque
     acoes[0].tipo = 0;
     acoes[0].valor = 27;
