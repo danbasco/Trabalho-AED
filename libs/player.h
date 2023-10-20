@@ -2,6 +2,7 @@
 #define player_h
 #include "carta.h"
 #include "caminho.h"
+#include "maojogador.h"
 #include <stdio.h>
 
 typedef struct {
@@ -27,7 +28,7 @@ void imprime_player(tp_player *jogador, tp_listad *carta) {
   printf("Escudo: %d/50 \n", jogador->escudo);
   printf("============================================\n\n");
 
-  imprime_listad(carta, 1);
+  imprime_listad(carta);
 }
 
 int checar_custo(tp_player *jogador, tp_cartas e) {

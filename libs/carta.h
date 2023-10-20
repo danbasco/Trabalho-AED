@@ -6,23 +6,6 @@
 #include <string.h>
 #include <time.h>
 
-int connectDB(sqlite3 **db, int *rc){
-
-  *rc = sqlite3_open("./data/cartas.db", db);
-
-  if (*rc != SQLITE_OK) {
-        
-        fprintf(stderr, "Cannot open database: %s\n", sqlite3_errmsg(*db));
-        sqlite3_close(*db);
-        return 0;
-  }
-  return 1;
-}
-
-int closeDB(sqlite3 *db){
-  sqlite3_close(db);
-}
-
 
 #define MAX 100
 
@@ -82,16 +65,12 @@ int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 
 // cartas do deck
 
-int criar_cartas(tp_pilha *pilha){
- 
-  sqlite3 *db;
-  sqlite3_stmt *stmt;
-  int rc;
- //sqlite
-  if(!connectDB(&db, &rc))return 0;
+void criar_cartas(tp_pilha *pilha, sqlite3 *db){
   
   tp_cartas cartas[12];
+//sqlite
 
+  sqlite3_stmt *stmt;
 
   sqlite3_prepare_v2(db, "SELECT Nome, tipodacarta, power, level, mana FROM cartas", -1, &stmt, 0);
   // cartas de ataque
@@ -114,8 +93,7 @@ int criar_cartas(tp_pilha *pilha){
     int random = rand() % 11;
     push(pilha, cartas[random]);
   }
-  closeDB(db);
-  return 1;
+
 }
 
 #endif

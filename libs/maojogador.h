@@ -62,45 +62,32 @@ int insere_listad_no_fim (tp_listad *lista, tp_cartas e){
 }
 
 //printar mao do jogador
-void imprime_listad(tp_listad *lista, int ordem) {
+
+void imprime_listad(tp_listad *lista) {
     if (lista==NULL)printf("Lista não inicializada.");
     else {
         int i = 1;
         tp_no *atu;
         printf("============== Mão do Jogador ==============\n\n");
-        switch (ordem) {
-    case 1: 
         atu = lista->ini;
         while (atu != NULL) {
             printf("%d.: %s\n", i, atu->carta.nome);
             atu=atu->prox;
             i++;
         }
-        printf("============================================\n\n");
-        break;
-    case 2:
-        atu = lista->fim;
-        while (atu != NULL) {
-            printf("%d.: %s\n", i, atu->carta.nome);
-            atu=atu->ant;
-            i++;
-        }
-        printf("============================================\n\n");
-        break;
-    default:    
-        printf("codigo invalido");
+        printf("\n============================================\n\n");
+    
     }
+
+    printf("\n");
 }
 
-printf("\n");
-}
 
-/*
 //remove um elemento da lista
-int remove_listad (tp_listad *lista, tp_cartas cartar){
+int remove_listad (tp_listad *lista, int num){
     tp_no *atu;
     atu = lista->ini;
-    while ( (atu != NULL) && (atu->carta != cartar) ) {
+    for(int i = 0; i<num; i++){
         atu=atu->prox;
     }
     if ( atu == NULL) return 0;
@@ -127,9 +114,15 @@ int remove_listad (tp_listad *lista, tp_cartas cartar){
     return 1;
 }
 
-*/
-
-
+//retornar a carta escolhida, similar a função TOP da pilha
+tp_cartas busca_listade(tp_listad *lista, int num){
+    tp_no *atu;
+    atu = lista->ini;
+    for(int i = 0; i<num; i++) {
+        atu=atu->prox;
+        }
+return atu->carta;
+}
 
 //criando a mao do jogador
 void sacar_deck(tp_pilha *cartas_baralho, tp_listad *cartas_jogador) {
@@ -142,7 +135,6 @@ void sacar_deck(tp_pilha *cartas_baralho, tp_listad *cartas_jogador) {
         insere_listad_no_fim(cartas_jogador, deck);
     
   }
-  imprime_listad(cartas_jogador, 1);
 }
 
 

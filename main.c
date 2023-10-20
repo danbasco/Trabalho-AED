@@ -1,14 +1,36 @@
 #include "libs/menu.h"
 #include <stdio.h>
 #include <locale.h>
+#include "libs/maojogador.h"
+#include "libs/combate.h"
+
+
+int connectDB(sqlite3 **db){
+    int rc;
+    rc = sqlite3_open("data/bongasDB.db", db);
+
+    if (rc != SQLITE_OK) {
+        
+        fprintf(stderr, "Não foi possível abrir a database: %s\n", sqlite3_errmsg(*db));
+        sqlite3_close(*db);
+        return 0;
+    }
+    return 1;
+}
+
+void closeDB(sqlite3 *db){
+  sqlite3_close(db);
+}
 
 int main() {
 
     setlocale(LC_ALL,"");
     tp_player player; //Jogador
 
-
+//LOAD DATA
+    sqlite3 *db;
     if (menu(&player)) {
+        if(!connectDB(&db))return 0;
 
     //Deck
         tp_pilha cartas_baralho, cartas_descarte;
@@ -17,19 +39,20 @@ int main() {
 
         inicializa_pilha(&cartas_baralho);
         inicializa_pilha(&cartas_descarte);
-        criar_cartas(&cartas_baralho);
+        criar_cartas(&cartas_baralho, db);
         sacar_deck(&cartas_baralho, maojogador);
 
+    //PRIMEIRO LEVEL
         tp_level *levels; //caminho do jogador;
 
         levels = inicializa_level();
         novolevel(&levels, 1, 0);
-        
-        //verificando o monstro
-        //verificando todos os ataques possiveis do monstro (debug)
-        //imprime_acoes_monstro(fila_monstro);
+
+
+    //INICIANDO COMBATE
+        initcombate(&player, levels, maojogador, &cartas_baralho, &cartas_descarte);
 
     }
-
+    closeDB(db);
     return 0;
 }
