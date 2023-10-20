@@ -7,7 +7,7 @@
 
 int connectDB(sqlite3 **db){
     int rc;
-    rc = sqlite3_open("data/bongasDB.db", db);
+    rc = sqlite3_open("./data/bongasDB.db", db);
 
     if (rc != SQLITE_OK) {
         

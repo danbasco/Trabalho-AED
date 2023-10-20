@@ -7,7 +7,7 @@
 #include "maojogador.h"
 
 
-void remover_descarte(tp_pilha *descarte, tp_pilha *baralho){  
+int remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
   tp_cartas carta[10];
   int i=0;
   while(!pilha_vazia(descarte)){
@@ -25,13 +25,19 @@ void remover_descarte(tp_pilha *descarte, tp_pilha *baralho){
     carta[random] = aux;
   }
 
-  printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
+
   for (int j = 0; j < 10; j++){
     push(baralho, carta[j]);
   }
-  printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
-}
 
+  
+  sacar_deck(baralho, c);
+  printf("Status da lista: %d\n", listad_vazia(c));
+  printf("Lista após sacar mão:\n");
+  imprime_listad(c);
+  
+  return 1;
+}
 
 
 void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
@@ -79,8 +85,6 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
         criar_acoes_monstro(&fila_monstro);
 
         while(player->vida > 0 && monstro.vida > 0){ //SE O PLAYER OU O MONSTRO MORRER, A LUTA ACABA
-            printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
-           printf("Status da lista: %d\n", listad_vazia(c));
           
           //uso da carta
             if(!listad_vazia(c)){
@@ -97,7 +101,7 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
               usar_carta(carta_jogar, player, &monstro);
 
 
-          //descarte da carta (não está funcionando corretamente)
+          //descarte da carta
               push(descarte, carta_jogar);
               remove_listad(c, i-1);
                 if(!pilha_vazia(baralho)){
@@ -107,10 +111,8 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
             }
             else{
               printf("Chegou no else\n");
-              remover_descarte(descarte, baralho); //ERRO
-              printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
-              imprime_pilha(*baralho);
-              sacar_deck(baralho, c);
+              if(!remover_descarte(descarte, baralho, c))printf("erro\n"); //ERRO
+              printf("Debug\n");
             }
             
        
