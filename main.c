@@ -40,8 +40,10 @@ int main() {
         inicializa_pilha(&cartas_baralho);
         inicializa_pilha(&cartas_descarte);
         criar_cartas(&cartas_baralho, db);
-        sacar_deck(&cartas_baralho, maojogador);
 
+
+
+        //imprime_pilha(cartas_baralho);
     //PRIMEIRO LEVEL
         tp_level *levels; //caminho do jogador;
 

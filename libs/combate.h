@@ -6,6 +6,34 @@
 #include "caminho.h"
 #include "maojogador.h"
 
+
+void remover_descarte(tp_pilha *descarte, tp_pilha *baralho){  
+  tp_cartas carta[10];
+  int i=0;
+  while(!pilha_vazia(descarte)){
+    pop(descarte, &carta[i]);
+    i++;
+ 
+  }
+
+  srand(time(NULL));
+  for (int k = 0; k < 10; k++) { // shuffle array
+    tp_cartas aux;
+    int random = rand() % 11;
+    aux = carta[k];
+    carta[k] = carta[random];
+    carta[random] = aux;
+  }
+
+  printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
+  for (int j = 0; j < 10; j++){
+    push(baralho, carta[j]);
+  }
+  printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
+}
+
+
+
 void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
   /*
   if (!checar_custo(jogador, cartas_jogador)) {
@@ -38,6 +66,7 @@ void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstr
 //mecânica do combate
 void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte){
     
+    sacar_deck(baralho, c);
     tp_monstro monstro; //monstro E suas ações
     tp_fila fila_monstro;
     tp_cartas carta_jogar;
@@ -50,27 +79,43 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
         criar_acoes_monstro(&fila_monstro);
 
         while(player->vida > 0 && monstro.vida > 0){ //SE O PLAYER OU O MONSTRO MORRER, A LUTA ACABA
-            printar_monstro(monstro, &fila_monstro);
-            imprime_player(player, c);
-            printf("Digite de 1 a 5 para escolher qual carta vai utilizar.\n\n");
-            int i;
-            scanf("%d", &i);
-            
-            carta_jogar = busca_listade(c, i-1);
-            printf("Carta Escolhida: %s\n", carta_jogar.nome);
-            usar_carta(carta_jogar, player, &monstro); //uso da carta
-        
-        //ataque monstro
+            printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
+           printf("Status da lista: %d\n", listad_vazia(c));
+          
+          //uso da carta
+            if(!listad_vazia(c)){
+
+              printar_monstro(monstro, &fila_monstro);
+              imprime_player(player, c);
+              printf("Digite de 1 a 5 para escolher qual carta vai utilizar.\n\n");
+              int i;
+              scanf("%d", &i);
+              
+
+              carta_jogar = busca_listade(c, i-1);
+              printf("Carta Escolhida: %s\n", carta_jogar.nome);
+              usar_carta(carta_jogar, player, &monstro);
 
 
-
-
-        //descarte da carta (não está funcionando corretamente)
-            push(descarte, carta_jogar);
-            remove_listad(c, i-1);
-            pop(baralho, &carta_jogar);
-            insere_listad_no_fim(c, carta_jogar);
+          //descarte da carta (não está funcionando corretamente)
+              push(descarte, carta_jogar);
+              remove_listad(c, i-1);
+                if(!pilha_vazia(baralho)){
+                pop(baralho, &carta_jogar);
+                insere_listad_no_fim(c, carta_jogar);
+              }
             }
+            else{
+              printf("Chegou no else\n");
+              remover_descarte(descarte, baralho); //ERRO
+              printf("Status: Baralho: %d\n Descarte: %d\n", altura_pilha(baralho), altura_pilha(descarte));
+              imprime_pilha(*baralho);
+              sacar_deck(baralho, c);
+            }
+            
+       
+          }
+        //VERIFICAR QUEM GANHOU, O JOGADOR OU O MONSTRO
             
     }
 }

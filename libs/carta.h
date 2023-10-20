@@ -64,7 +64,14 @@ int altura_pilha(tp_pilha *p) { return p->topo + 1; }
 
 
 // cartas do deck
-
+void imprime_pilha(tp_pilha p){
+    tp_cartas e;
+    printf("\n");
+    while (!pilha_vazia(&p)){
+        pop(&p, &e);
+        printf("Carta: %s\n", e.nome);
+    }
+}
 void criar_cartas(tp_pilha *pilha, sqlite3 *db){
   
   tp_cartas cartas[12];
