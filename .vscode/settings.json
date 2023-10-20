@@ -1,7 +1,0 @@
-{
-    "files.associations": {
-        "menu.h": "c",
-        "player.h": "c",
-        "carta.h": "c"
-    }
-}
