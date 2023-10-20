@@ -7,11 +7,11 @@
 #include "maojogador.h"
 
 void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
-
+  /*
   if (!checar_custo(jogador, cartas_jogador)) {
     printf("Mana insuficiente.\n");
   } else {
-
+*/
     jogador->mana = jogador->mana - cartas_jogador.mana;
     switch (cartas_jogador.tipodacarta) { //SWITCH CASE
     case 0:
@@ -32,7 +32,7 @@ void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstr
 
 
   }
-}
+//}
 
 
 //mecânica do combate
@@ -61,15 +61,15 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
             usar_carta(carta_jogar, player, &monstro); //uso da carta
         
         //ataque monstro
-            
 
 
 
-        //descarte da carta
+
+        //descarte da carta (não está funcionando corretamente)
             push(descarte, carta_jogar);
             remove_listad(c, i-1);
-
-
+            pop(baralho, &carta_jogar);
+            insere_listad_no_fim(c, carta_jogar);
             }
             
     }
