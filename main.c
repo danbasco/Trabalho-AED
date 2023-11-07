@@ -5,19 +5,6 @@
 #include "libs/combate.h"
 
 
-int connectDB(sqlite3 **db){
-    int rc;
-    rc = sqlite3_open("./data/bongasDB.db", db);
-
-    if (rc != SQLITE_OK) {
-        
-        fprintf(stderr, "Não foi possível abrir a database: %s\n", sqlite3_errmsg(*db));
-        sqlite3_close(*db);
-        return 0;
-    }
-    return 1;
-}
-
 void closeDB(sqlite3 *db){
   sqlite3_close(db);
 }
@@ -30,7 +17,6 @@ int main() {
 //LOAD DATA
     sqlite3 *db;
     if (menu(&player)) {
-        if(!connectDB(&db))return 0;
 
     //Deck
         tp_pilha cartas_baralho, cartas_descarte;
@@ -55,6 +41,5 @@ int main() {
         initcombate(&player, levels, maojogador, &cartas_baralho, &cartas_descarte);
 
     }
-    closeDB(db);
     return 0;
 }

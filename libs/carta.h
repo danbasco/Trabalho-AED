@@ -76,23 +76,16 @@ void criar_cartas(tp_pilha *pilha, sqlite3 *db){
   
   tp_cartas cartas[12];
 //sqlite
+  FILE *nome;
+  char name[30]; 
+  nome = fopen("./cartas/cartas.txt", "r");
+  while(fgets(name, 30, nome) != NULL){
+    
+  }
 
-  sqlite3_stmt *stmt;
-
-  sqlite3_prepare_v2(db, "SELECT Nome, tipodacarta, power, level, mana FROM cartas", -1, &stmt, 0);
   // cartas de ataque
   int i = 0;
-  const unsigned char* name;
-  while(sqlite3_step(stmt) != SQLITE_DONE){
 
-    name = sqlite3_column_text(stmt, 0);
-    strcpy(cartas[i].nome, name);
-    cartas[i].tipodacarta = sqlite3_column_int(stmt, 1);
-    cartas[i].power = sqlite3_column_int(stmt, 2);
-    cartas[i].level = sqlite3_column_int(stmt, 3);
-    cartas[i].mana = sqlite3_column_int(stmt, 4);
-    i++;
-  }
 
   // Função preencher pilha:
   srand(time(NULL));
