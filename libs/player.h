@@ -23,6 +23,24 @@ void criarplayer(tp_player *jogador) {
   
 }
 
+int playerupdate(tp_player *jogador, char *nome){
+  char direc[60] = ".\\data\\player\\";
+  strcat(direc, nome);
+  strcat(direc, ".dat");
+
+  FILE *update = fopen(direc, "w+");
+  if(!update)return 0;
+
+  strcpy(jogador->nome, nome);
+  fprintf(update, "%s\n", jogador->nome);
+  fprintf(update, "%d %d %d %d\n", jogador->vida, jogador->mana, jogador->escudo, jogador->level);
+
+  fclose(update);
+
+  return 1;
+}
+
+
 
 int menu(tp_player *jogador) {
 
@@ -39,34 +57,57 @@ int menu(tp_player *jogador) {
 
   int i;
   scanf("%d", &i);
+
+  DIR *saves;
+  struct dirent *dir;
+
   switch (i)
   {
   case 1:
-    
+  
+  //VERIFICAR SE POSSUI MAIS DE 5 SAVES
+
+    saves = opendir("./data/player/");
+
     char nome[30];
 
     printf("Qual será o nome do jogador?\n");
     scanf(" %26[^\n]s", nome);
-    printf("nome - %s\n", nome);
 
-    char dir[60] = "./data/player/";
-    strcpy(dir, nome);
-    strcpy(dir, ".dat");
-    
-    FILE *newgame = fopen(dir, "w");
-    if(!newgame){
-      printf("erro ao criar arquivo")
-    }
+    char direc[60] = ".\\data\\player\\";
+    strcat(direc, nome);
+
+    strcat(direc, ".dat");
+
+    FILE *newgame = fopen(direc, "w");
+    if(!newgame)return 0;
+    fclose(newgame);
 
     criarplayer(jogador);
+
+    if(!playerupdate(jogador, nome))printf("Ocorreu algum erro ao atualizar o jogador.\n");
+
+    printf("Bem vindo, %s!\n", jogador->nome);
 
     return 1;
     break;
   
   case 2:
     
+    saves = opendir("./data/player");
+    if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
 
+    int pos = 0;
 
+    printf("#### SAVES ####\n");
+    while((dir = readdir(saves)) != NULL){
+      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a'){
+        char *upname = dir->d_name;
+        upname[-3] = '\0';
+        printf("%d.: %s\n", pos+1, dir->d_name);
+      pos++;
+      }
+      }
 
 
 
