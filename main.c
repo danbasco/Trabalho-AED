@@ -1,13 +1,9 @@
-#include "libs/menu.h"
+#include "libs/player.h"
 #include <stdio.h>
 #include <locale.h>
 #include "libs/maojogador.h"
 #include "libs/combate.h"
 
-
-void closeDB(sqlite3 *db){
-  sqlite3_close(db);
-}
 
 int main() {
 
@@ -15,7 +11,6 @@ int main() {
     tp_player player; //Jogador
 
 //LOAD DATA
-    sqlite3 *db;
     if (menu(&player)) {
 
     //Deck
@@ -25,7 +20,7 @@ int main() {
 
         inicializa_pilha(&cartas_baralho);
         inicializa_pilha(&cartas_descarte);
-        criar_cartas(&cartas_baralho, db);
+        criar_cartas(&cartas_baralho);
 
 
 

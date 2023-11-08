@@ -68,7 +68,21 @@ void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstr
   }
 //}
 
+void configcarta(tp_cartas carta){
+  switch (carta.tipodacarta) { //SWITCH CASE
+    case 0:
+      printf("Nome: %s\nTipo: Combate\nPoder: %d\nMana: %d\n", carta.nome, carta.power, carta.mana);
+      break;
 
+    case 1:
+      printf("Nome: %s\nTipo: Defesa\nPoder: %d\nMana: %d\n", carta.nome, carta.power, carta.mana);
+      break;
+
+    case 2:
+      printf("Nome: %s\nTipo: Especial\nPoder: %d\nMana: %d\n", carta.nome, carta.power, carta.mana);
+}
+
+}
 //mecânica do combate
 void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte){
     
@@ -97,9 +111,9 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
               
 
               carta_jogar = busca_listade(c, i-1);
-              printf("Carta Escolhida: %s\n", carta_jogar.nome);
+              configcarta(carta_jogar);
               usar_carta(carta_jogar, player, &monstro);
-
+              
 
           //descarte da carta
               push(descarte, carta_jogar);

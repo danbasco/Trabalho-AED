@@ -1,7 +1,6 @@
 #ifndef CARTA_H
 #define CARTA_H
 #include <stdio.h>
-#include <sqlite3.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
@@ -72,20 +71,39 @@ void imprime_pilha(tp_pilha p){
         printf("Carta: %s\n", e.nome);
     }
 }
-void criar_cartas(tp_pilha *pilha, sqlite3 *db){
-  
-  tp_cartas cartas[12];
-//sqlite
-  FILE *nome;
-  char name[30]; 
-  nome = fopen("./cartas/cartas.txt", "r");
-  while(fgets(name, 30, nome) != NULL){
-    
-  }
+int criar_cartas(tp_pilha *pilha){
 
-  // cartas de ataque
+  tp_cartas cartas[12];
+
+
+  //manipulação do arquivo txt
+  FILE *carta_nome, *carta_specs; //dois arquivos, um para ler os nomes e outro para as habilidades
+  char name[50];
+  char *token;
+
+  int tipo, poder, level, mana;
+
+  carta_nome= fopen("./data/cartas/nome.txt", "r");
+  carta_specs = fopen("./data/cartas/habilidades.txt", "r");
+
+  if(!carta_nome || !carta_specs)printf("erro ao abrir");
+  
   int i = 0;
 
+  while(fgets(name, sizeof(name), carta_nome)){
+    strcpy(cartas[i].nome, name);
+    i++;
+  }
+
+  i=0;
+  while(fscanf(carta_specs, "%d %d %d %d", &tipo, &poder, &level, &mana) != EOF){
+    //atribuir valores as cartas
+    cartas[i].tipodacarta = tipo;
+    cartas[i].level = level;
+    cartas[i].mana = mana;
+    cartas[i].power = poder;
+    i++;
+  }
 
   // Função preencher pilha:
   srand(time(NULL));
@@ -93,6 +111,9 @@ void criar_cartas(tp_pilha *pilha, sqlite3 *db){
     int random = rand() % 11;
     push(pilha, cartas[random]);
   }
+
+  //FECHAR OS ARQUIVOS
+  fclose(carta_nome); fclose(carta_specs);
 
 }
 

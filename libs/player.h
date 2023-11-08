@@ -3,10 +3,14 @@
 #include "carta.h"
 #include "caminho.h"
 #include "maojogador.h"
+
 #include <stdio.h>
+#include <dirent.h>
+
+#include "arte.h"
 
 typedef struct {
-  char nome[50];
+  char nome[30];
   int vida, mana, escudo, level; // 200 de vida, 50 de mana, 0 de escudo
 
 } tp_player;
@@ -17,6 +21,61 @@ void criarplayer(tp_player *jogador) {
   jogador->escudo = 0;
   jogador->level = 1;
   
+}
+
+
+int menu(tp_player *jogador) {
+
+  asciiart();
+  printf("#####################################################\n"
+         "#                                                   #\n" 
+         "#                                                   #\n" 
+         "#                                                   #\n" 
+         "#     1- Novo Jogo 2- Carregar Jogo 3- Encerrar     #\n" 
+         "#                                                   #\n" 
+         "#                                                   #\n" 
+         "#                                                   #\n" 
+         "#####################################################\n\n\n");
+
+  int i;
+  scanf("%d", &i);
+  switch (i)
+  {
+  case 1:
+    
+    char nome[30];
+
+    printf("Qual será o nome do jogador?\n");
+    scanf(" %26[^\n]s", nome);
+    printf("nome - %s\n", nome);
+
+    char dir[60] = "./data/player/";
+    strcpy(dir, nome);
+    strcpy(dir, ".dat");
+    
+    FILE *newgame = fopen(dir, "w");
+    if(!newgame){
+      printf("erro ao criar arquivo")
+    }
+
+    criarplayer(jogador);
+
+    return 1;
+    break;
+  
+  case 2:
+    
+
+
+
+
+
+    break;
+  default:
+    return 0;
+  }
+
+
 }
 
 
