@@ -40,22 +40,40 @@ int playerupdate(tp_player *jogador, char *nome){
   return 1;
 }
 
+void carregarjogador(tp_player *jogador, FILE *arquivo){
+  char nome[30];
+
+  fscanf(arquivo, " %[^\n]s", nome);
+  strcpy(jogador->nome, nome);
+
+  fscanf(arquivo, "%d %d %d %d", &jogador->vida, &jogador->mana, &jogador->escudo, &jogador->level);
+
+}
+
+int start(tp_player *jogador){
+  asciiart();
+  menu(jogador);
+}
 
 
 int menu(tp_player *jogador) {
 
-  asciiart();
-  printf("#####################################################\n"
-         "#                                                   #\n" 
-         "#                                                   #\n" 
-         "#                                                   #\n" 
-         "#     1- Novo Jogo 2- Carregar Jogo 3- Encerrar     #\n" 
-         "#                                                   #\n" 
-         "#                                                   #\n" 
-         "#                                                   #\n" 
-         "#####################################################\n\n\n");
 
-  int i;
+  printf("#####################################################################\n"
+         "#                                                                   #\n" 
+         "#                                                                   #\n" 
+         "#                                                                   #\n" 
+         "#     1- Novo Jogo 2- Carregar Jogo 3- Deletar Jogo 4- Encerrar     #\n" 
+         "#                                                                   #\n" 
+         "#                                                                   #\n" 
+         "#                                                                   #\n" 
+         "#####################################################################\n\n\n");
+
+  int i, k, pos = 0;
+
+  char names_save[5][30];
+  char direc[60] = ".\\data\\player\\";
+
   scanf("%d", &i);
 
   DIR *saves;
@@ -66,15 +84,24 @@ int menu(tp_player *jogador) {
   case 1:
   
   //VERIFICAR SE POSSUI MAIS DE 5 SAVES
-
+    pos = 0;
     saves = opendir("./data/player/");
+    while((dir = readdir(saves)) != NULL){
+      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a')pos++;
+    }
+    if(pos==5){
+      printf("Limite Máximo de 5 saves atingido!\n\n\n");
+      menu(jogador);
+      return 1;
+    }
+    closedir(saves);
 
     char nome[30];
 
     printf("Qual será o nome do jogador?\n");
     scanf(" %26[^\n]s", nome);
 
-    char direc[60] = ".\\data\\player\\";
+
     strcat(direc, nome);
 
     strcat(direc, ".dat");
@@ -97,22 +124,77 @@ int menu(tp_player *jogador) {
     saves = opendir("./data/player");
     if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
 
-    int pos = 0;
-
-    printf("#### SAVES ####\n");
+    pos = 0;
+    printf("######### SAVES #########\n");
+    k = 0;
     while((dir = readdir(saves)) != NULL){
+      
+      if(pos == 5)break;
+
       if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a'){
-        char *upname = dir->d_name;
-        upname[-3] = '\0';
-        printf("%d.: %s\n", pos+1, dir->d_name);
-      pos++;
-      }
+
+        strcpy(names_save[k], dir->d_name);
+
+        printf("%d.: ", pos+1);
+        for(int i=0; i<strlen(dir->d_name)-4; i++)printf("%c", dir->d_name[i]);
+        printf("\n\n");
+        pos++;
+        k++;
+        }
+
+
+    }
+    closedir(saves);
+
+    printf("Digite qual save deseja carregar [1/5]\n");
+    int load;
+
+    scanf("%d", &load);
+    strcat(direc, names_save[load-1]);
+
+    printf("%s\n", direc);
+
+    FILE *carregargame = fopen(direc, "r");;
+
+    if(!carregargame)printf("Ocorreu erro ao abrir o diretório dos saves\n");
+    
+    carregarjogador(jogador, carregargame);
+    printf("Bem vindo, %s!\n", jogador->nome);
+    return 1;
+
+
+  case 3:
+     
+    saves = opendir("./data/player");
+    if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
+
+    pos = 0;
+    printf("#### SAVES ####\n");
+
+    k = 0; 
+    while((dir = readdir(saves)) != NULL){
+      
+      if(pos == 5)break;
+
+      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a'){
+
+        strcpy(names_save[k], dir->d_name);
+
+        printf("%d.: ", pos+1);
+        for(int i=0; i<strlen(dir->d_name)-4; i++)printf("%c", dir->d_name[i]);
+        printf("\n\n");
+        pos++;
+        k++;
+        }
+
+
       }
 
 
 
     break;
   default:
+
     return 0;
   }
 

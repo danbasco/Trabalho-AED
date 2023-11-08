@@ -11,7 +11,7 @@ int main() {
     tp_player player; //Jogador
 
 //LOAD DATA
-    if (menu(&player)) {
+    if (start(&player)) {
 
     //Deck
         tp_pilha cartas_baralho, cartas_descarte;
