@@ -45,7 +45,10 @@ int usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro
     case 0:
 
       monstro->escudo -= cartas_jogador.power;
-      if(monstro->escudo < 0)monstro->vida +=monstro->escudo;
+      if(monstro->escudo < 0){
+        monstro->vida +=monstro->escudo;
+        monstro->escudo = 0;
+      }
       break;
 
     case 1:
@@ -135,10 +138,14 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           switch (acao_monstro.tipo)
           {
           case 0:
+
             printf("O monstro atacou o %s e causou %d de dano!\n", player->nome, acao_monstro.valor);
+            
             player->escudo -= acao_monstro.valor;
             if(player->escudo < 0){
               player->vida += player->escudo;
+              player->escudo = 0;
+
             }
             break;
           case 1:
@@ -183,7 +190,9 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           }
         }
         else if(monstro.vida <= 0){
-          printf("Parabéns, você matou o monstro!");
+          printf("Parabéns, você matou o monstro!\n");
+          
+
 
         }
           

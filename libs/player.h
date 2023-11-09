@@ -24,7 +24,7 @@ void criarplayer(tp_player *jogador) {
 }
 
 int playerupdate(tp_player *jogador, char *nome){
-  char direc[60] = ".\\data\\player\\";
+  char direc[60] = "./data/player/";
   strcat(direc, nome);
   strcat(direc, ".dat");
 
