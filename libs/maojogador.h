@@ -124,6 +124,21 @@ tp_cartas busca_listade(tp_listad *lista, int num){
 return atu->carta;
 }
 
+
+void limpar_restobaralho(tp_listad *lista, tp_pilha *descarte){
+
+    tp_cartas aux;
+    while (!listad_vazia(lista))
+    {
+        aux = busca_listade(lista, 0);
+        push(descarte, aux);
+        remove_listad(lista, 0);
+    }
+    
+}
+
+
+
 //criando a mao do jogador
 void sacar_deck(tp_pilha *cartas_baralho, tp_listad *cartas_jogador) {
 

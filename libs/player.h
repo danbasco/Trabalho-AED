@@ -146,6 +146,12 @@ int menu(tp_player *jogador) {
     }
     closedir(saves);
 
+    if(pos == 0){
+      printf("Não existe nenhum save para carregar!\n\n");
+      menu(jogador);
+      return 1;
+    }
+
     printf("Digite qual save deseja carregar [1/5]\n");
     int load;
 

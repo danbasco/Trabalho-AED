@@ -39,13 +39,13 @@ int remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){
   return 1;
 }
 
-
-void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
-  /*
+int usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
+  
   if (!checar_custo(jogador, cartas_jogador)) {
     printf("Mana insuficiente.\n");
+    return 0;
   } else {
-*/
+
     jogador->mana = jogador->mana - cartas_jogador.mana;
     switch (cartas_jogador.tipodacarta) { //SWITCH CASE
     case 0:
@@ -64,9 +64,9 @@ void usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstr
       break;
     }
 
-
+  return 1;
   }
-//}
+}
 
 void configcarta(tp_cartas carta){
   switch (carta.tipodacarta) { //SWITCH CASE
@@ -97,43 +97,57 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
         
         criarmonstro(&monstro, level); //Criando o monstro
         criar_acoes_monstro(&fila_monstro);
-
+        int turno;
         while(player->vida > 0 && monstro.vida > 0){ //SE O PLAYER OU O MONSTRO MORRER, A LUTA ACABA
-          
+          turno = 1;
           //uso da carta
-            if(!listad_vazia(c)){
+          do
+          {
 
-              printar_monstro(monstro, &fila_monstro);
-              imprime_player(player, c);
-              printf("Digite de 1 a 5 para escolher qual carta vai utilizar.\n\n");
-              int i;
-              scanf("%d", &i);
-              
+            if(listad_vazia(c)){
+              turno = 0;
+              break;
+            }
 
-              carta_jogar = busca_listade(c, i-1);
-              configcarta(carta_jogar);
-              usar_carta(carta_jogar, player, &monstro);
-              
+            printar_monstro(monstro, &fila_monstro);
+            imprime_player(player, c);
 
-          //descarte da carta
+            printf("Baralho: %d Descarte: %d\n\n", altura_pilha(baralho), altura_pilha(descarte));
+
+            printf("### Digite de 1 a 5 para escolher qual carta vai utilizar. ###\n### Digite 0 para encerrar o turno\n");
+            int i;
+            scanf("%d", &i);
+            if(i==0){
+              turno = 0;
+              break;
+            }
+            carta_jogar = busca_listade(c, i-1);
+            if(usar_carta(carta_jogar, player, &monstro)){
               push(descarte, carta_jogar);
               remove_listad(c, i-1);
-                if(!pilha_vazia(baralho)){
-                pop(baralho, &carta_jogar);
-                insere_listad_no_fim(c, carta_jogar);
-              }
             }
-            else{
-              printf("Chegou no else\n");
-              if(!remover_descarte(descarte, baralho, c))printf("erro\n"); //ERRO
-              printf("Debug\n");
-            }
-            
-       
+
+          } while (turno);
+          //ATAQUE MONSTRO
+
+
+          //RESETAR MANA DO JOGADOR
+          player->mana = 50;
+          player->escudo = 0;
+          //FIM DA RODADA 
+          limpar_restobaralho(c, descarte);
+          if(!pilha_vazia(baralho))sacar_deck(baralho, c);
+          else{
+            remover_descarte(descarte, baralho, c); //verificar erro
+          }
+
           }
         //VERIFICAR QUEM GANHOU, O JOGADOR OU O MONSTRO
             
     }
+    //REPOUSO
+
+    if(level->tipo == 1);
 }
 
 #endif
