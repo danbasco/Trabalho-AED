@@ -171,7 +171,7 @@ int menu(tp_player *jogador) {
 
   case 3:
      
-    saves = opendir(direcs);
+    saves = opendir(direc);
     if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
 
     pos = 0;

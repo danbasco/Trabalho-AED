@@ -12,7 +12,7 @@
 typedef struct {
   char name[30];
   int vida;
-  int escudo, tipo; //tipo 0 = mob normal; 1 = boss
+  int escudo, tipo; //tipo 0 = mob normal; 1 = boss || Escudo maximo = 30
 
 } tp_monstro;
 
@@ -88,7 +88,7 @@ void imprime_acoes_monstro(tp_fila f){
 
 int ultima_acao(tp_fila *f, acoes_monstro *e){
     if(fila_vazia(f)) return 0;
-    *e = f->acoes[f->ini];
+    *e = f->acoes[proximo(f->ini)];
 
 }
 

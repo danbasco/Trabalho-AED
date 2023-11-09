@@ -83,6 +83,25 @@ void imprime_listad(tp_listad *lista) {
 }
 
 
+int tamanho_listad(tp_listad *lista) {
+    if (lista==NULL)printf("Lista não inicializada.");
+    else {
+        int i = 0;
+        tp_no *atu;
+        
+        atu = lista->ini;
+        while (atu != NULL) {
+            
+            atu=atu->prox;
+            i++;
+        }
+        
+    return i;
+    }
+
+    printf("\n");
+}
+
 //remove um elemento da lista
 int remove_listad (tp_listad *lista, int num){
     tp_no *atu;
@@ -115,13 +134,16 @@ int remove_listad (tp_listad *lista, int num){
 }
 
 //retornar a carta escolhida, similar a função TOP da pilha
-tp_cartas busca_listade(tp_listad *lista, int num){
+int busca_listade(tp_listad *lista, int num, tp_cartas *carta){
     tp_no *atu;
     atu = lista->ini;
     for(int i = 0; i<num; i++) {
         atu=atu->prox;
         }
-return atu->carta;
+        if(atu==NULL)return 0;
+        *carta = atu->carta;
+
+    return 1;
 }
 
 
@@ -130,7 +152,7 @@ void limpar_restobaralho(tp_listad *lista, tp_pilha *descarte){
     tp_cartas aux;
     while (!listad_vazia(lista))
     {
-        aux = busca_listade(lista, 0);
+        busca_listade(lista, 0, &aux);
         push(descarte, aux);
         remove_listad(lista, 0);
     }

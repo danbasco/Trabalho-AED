@@ -7,36 +7,30 @@
 #include "maojogador.h"
 
 
-int remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
+void remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
+  int size = altura_pilha(descarte);
   tp_cartas carta[10];
   int i=0;
+
   while(!pilha_vazia(descarte)){
     pop(descarte, &carta[i]);
     i++;
  
   }
-
-  srand(time(NULL));
-  for (int k = 0; k < 10; k++) { // shuffle array
-    tp_cartas aux;
-    int random = rand() % 11;
-    aux = carta[k];
+  tp_cartas auxc;
+  for (int k = 0; k < size; k++) { // shuffle array
+    int random = rand() % size;
+    auxc = carta[k];
     carta[k] = carta[random];
-    carta[random] = aux;
+    carta[random] = auxc;
   }
 
 
-  for (int j = 0; j < 10; j++){
+  for (int j = 0; j < size; j++){
     push(baralho, carta[j]);
   }
 
-  
-  sacar_deck(baralho, c);
-  printf("Status da lista: %d\n", listad_vazia(c));
-  printf("Lista após sacar mão:\n");
-  imprime_listad(c);
-  
-  return 1;
+
 }
 
 int usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro) {
@@ -49,15 +43,19 @@ int usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro
     jogador->mana = jogador->mana - cartas_jogador.mana;
     switch (cartas_jogador.tipodacarta) { //SWITCH CASE
     case 0:
-      monstro->vida -= cartas_jogador.power;
+
+      monstro->escudo -= cartas_jogador.power;
+      if(monstro->escudo < 0)monstro->vida +=monstro->escudo;
       break;
 
     case 1:
-      jogador->escudo += cartas_jogador.power;
+      if(jogador->escudo + cartas_jogador.power > 50)jogador->escudo = 50;
+      else{jogador->escudo + cartas_jogador.power;}
       break;
 
     case 2:
-      jogador->vida += cartas_jogador.power;
+      if(jogador->vida + cartas_jogador.power > 200)jogador->vida = 200;
+      else{jogador->vida + cartas_jogador.power;};
       break;
     default:
       printf("Ocorreu algum erro ao executar o programa.\n tente novamente\n");
@@ -86,9 +84,9 @@ void configcarta(tp_cartas carta){
 //mecânica do combate
 void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte){
     
-    sacar_deck(baralho, c);
+    if(tamanho_listad(c) == 0)sacar_deck(baralho, c);
     tp_monstro monstro; //monstro E suas ações
-    tp_fila fila_monstro;
+    tp_fila fila_monstro; acoes_monstro acao_monstro;
     tp_cartas carta_jogar;
 
     inicializa_fila(&fila_monstro);
@@ -97,6 +95,8 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
         
         criarmonstro(&monstro, level); //Criando o monstro
         criar_acoes_monstro(&fila_monstro);
+
+
         int turno;
         while(player->vida > 0 && monstro.vida > 0){ //SE O PLAYER OU O MONSTRO MORRER, A LUTA ACABA
           turno = 1;
@@ -121,16 +121,39 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
               turno = 0;
               break;
             }
-            carta_jogar = busca_listade(c, i-1);
+            if(!busca_listade(c, i-1, &carta_jogar))printf("Não foi possível encontrar essa carta!\n");
+            else{
             if(usar_carta(carta_jogar, player, &monstro)){
               push(descarte, carta_jogar);
               remove_listad(c, i-1);
             }
-
+            }
           } while (turno);
           //ATAQUE MONSTRO
-
-
+          printf("Vez do monstro!\n");
+          remove_fila(&fila_monstro, &acao_monstro);
+          switch (acao_monstro.tipo)
+          {
+          case 0:
+            printf("O monstro atacou o %s e causou %d de dano!\n", player->nome, acao_monstro.valor);
+            player->escudo -= acao_monstro.valor;
+            if(player->escudo < 0){
+              player->vida += player->escudo;
+            }
+            break;
+          case 1:
+            printf("O monstro usou o escudo e ganhou %d de proteção!\n", acao_monstro.valor);
+            if(monstro.escudo + acao_monstro.valor > 30)monstro.escudo = 30;
+            else{monstro.escudo += acao_monstro.valor;}
+            break;
+          case 2:
+            printf("O monstro se curou e ganhou %d de vida!\n", acao_monstro.valor);
+            if(monstro.vida + acao_monstro.valor > 200)monstro.vida = 200;
+            else{monstro.vida += acao_monstro.valor;}
+          default:
+            break;
+          }
+          insere_fila(&fila_monstro, acao_monstro);
           //RESETAR MANA DO JOGADOR
           player->mana = 50;
           player->escudo = 0;
@@ -138,12 +161,32 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           limpar_restobaralho(c, descarte);
           if(!pilha_vazia(baralho))sacar_deck(baralho, c);
           else{
-            remover_descarte(descarte, baralho, c); //verificar erro
+            srand(time(NULL));
+            remover_descarte(descarte,baralho, c); //verificar erro
+            sacar_deck(baralho, c);
           }
 
           }
         //VERIFICAR QUEM GANHOU, O JOGADOR OU O MONSTRO
-            
+        if(player->vida <= 0){
+          printf("Você perdeu no level %d! Deseja continuar? [1 - Sim/2 - Não]\n\n", player->level);
+          int resp;
+          scanf("%d", &resp);
+          if(resp == 1){
+
+            player->vida = 200;
+            monstro.vida = 200;
+
+            initcombate(player, level, c, baralho, descarte);}
+          else{
+            menu(player);
+          }
+        }
+        else if(monstro.vida <= 0){
+          printf("Parabéns, você matou o monstro!");
+
+        }
+          
     }
     //REPOUSO
 
