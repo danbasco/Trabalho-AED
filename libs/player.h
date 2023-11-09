@@ -72,7 +72,7 @@ int menu(tp_player *jogador) {
   int i, k, pos = 0;
 
   char names_save[5][30];
-  char direc[60] = ".\\data\\player\\";
+  char direc[60] = "./data/player/";
 
   scanf("%d", &i);
 
@@ -85,7 +85,7 @@ int menu(tp_player *jogador) {
   
   //VERIFICAR SE POSSUI MAIS DE 5 SAVES
     pos = 0;
-    saves = opendir("./data/player/");
+    saves = opendir(direc);
     while((dir = readdir(saves)) != NULL){
       if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a')pos++;
     }
@@ -121,7 +121,7 @@ int menu(tp_player *jogador) {
   
   case 2:
     
-    saves = opendir("./data/player");
+    saves = opendir(direc);
     if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
 
     pos = 0;
@@ -171,7 +171,7 @@ int menu(tp_player *jogador) {
 
   case 3:
      
-    saves = opendir("./data/player");
+    saves = opendir(direcs);
     if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
 
     pos = 0;
