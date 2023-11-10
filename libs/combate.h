@@ -138,6 +138,9 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
             }
           } while (turno);
           //ATAQUE MONSTRO
+
+          if(monstro.vida <= 0)break;
+
           printf("Vez do monstro!\n");
           remove_fila(&fila_monstro, &acao_monstro);
           switch (acao_monstro.tipo)
@@ -165,14 +168,19 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           default:
             break;
           }
+
           insere_fila(&fila_monstro, acao_monstro);
+
           //RESETAR MANA DO JOGADOR
+
           player->mana = 50;
           player->escudo = 0;
           //FIM DA RODADA 
+
           limpar_restobaralho(c, descarte);
           if(!pilha_vazia(baralho))sacar_deck(baralho, c);
           else{
+
             srand(time(NULL));
             remover_descarte(descarte,baralho, c); //verificar erro
             sacar_deck(baralho, c);
@@ -192,17 +200,20 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
             monstro.vida = 200;
 
             initcombate(player, level, c, baralho, descarte);}
+
           else{
+
             menu(player);
           }
 
         }
-        if(monstro.vida <= 0){
+        else{
+          printf("teste\n");
 
-          adicionar_cartas(baralho);
+          player->level += 1;
+          playerupdate(player, player->nome);
 
-
-          
+          adicionar_cartas(baralho); // VERIFICAR ERRO AQUI
 
 
         }
