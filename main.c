@@ -20,7 +20,7 @@ int main() {
 
         inicializa_pilha(&cartas_baralho);
         inicializa_pilha(&cartas_descarte);
-        criar_cartas(&cartas_baralho);
+        criar_cartas(&cartas_baralho, 10);
 
 
 

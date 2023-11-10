@@ -53,7 +53,7 @@ int usar_carta(tp_cartas cartas_jogador, tp_player *jogador, tp_monstro *monstro
 
     case 1:
       if(jogador->escudo + cartas_jogador.power > 50)jogador->escudo = 50;
-      else{jogador->escudo + cartas_jogador.power;}
+      else{jogador->escudo += cartas_jogador.power;}
       break;
 
     case 2:
@@ -106,6 +106,11 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           //uso da carta
           do
           {
+            
+            if(monstro.vida <= 0){
+              turno = 0;
+              break;
+            }
 
             if(listad_vazia(c)){
               turno = 0;
@@ -174,8 +179,10 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           }
 
           }
+
         //VERIFICAR QUEM GANHOU, O JOGADOR OU O MONSTRO
         if(player->vida <= 0){
+
           printf("Você perdeu no level %d! Deseja continuar? [1 - Sim/2 - Não]\n\n", player->level);
           int resp;
           scanf("%d", &resp);
@@ -188,9 +195,13 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
           else{
             menu(player);
           }
+
         }
-        else if(monstro.vida <= 0){
-          printf("Parabéns, você matou o monstro!\n");
+        if(monstro.vida <= 0){
+
+          adicionar_cartas(baralho);
+
+
           
 
 

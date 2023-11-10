@@ -71,7 +71,7 @@ void imprime_pilha(tp_pilha p){
         printf("Carta: %s\n", e.nome);
     }
 }
-int criar_cartas(tp_pilha *pilha){
+int criar_cartas(tp_pilha *pilha, int quant){
 
   tp_cartas cartas[12];
 
@@ -107,8 +107,8 @@ int criar_cartas(tp_pilha *pilha){
 
   // Função preencher pilha:
   srand(time(NULL));
-  for (int i = 0; i < 10; i++) { // shuffle array
-    int random = rand() % 11;
+  for (int i = 0; i < quant; i++) { // shuffle array
+    int random = rand() % 12;
     push(pilha, cartas[random]);
   }
 
@@ -116,5 +116,31 @@ int criar_cartas(tp_pilha *pilha){
   fclose(carta_nome); fclose(carta_specs);
 
 }
+
+void adicionar_cartas(tp_pilha *baralho){
+  tp_pilha aux;
+  criar_cartas(&aux, 3);
+
+  printf("Parabéns, você matou o monstro! Escolha 1 carta para adicionar ao seu baralho!\n");
+
+  imprime_pilha(aux);
+
+  int i;
+  scanf("%d", &i);
+
+  for(int j=0; j<i-1; j++){
+    pop(&aux, NULL);
+  }
+
+  tp_cartas selec;
+  pop(&aux, &selec);
+
+  push(baralho, selec);
+
+
+}
+
+
+
 
 #endif
