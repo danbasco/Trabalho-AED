@@ -9,7 +9,7 @@
 #define MAX 100
 
 typedef struct {
-  char nome[30];
+  char nome[100];
   int tipodacarta; // tipo de carta por num (0==ataque , 1==defesa, especial ==
                    // 2)
   int power, mana, level;
@@ -78,7 +78,7 @@ int criar_cartas(tp_pilha *pilha, int quant){
 
   //manipulação do arquivo txt
   FILE *carta_nome, *carta_specs; //dois arquivos, um para ler os nomes e outro para as habilidades
-  char name[50];
+  char name[100];
   char *token;
 
   int tipo, poder, level, mana;

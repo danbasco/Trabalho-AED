@@ -5,6 +5,7 @@
 #include "monstro.h"
 #include "caminho.h"
 #include "maojogador.h"
+#include <string.h>
 
 
 void remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
@@ -82,8 +83,37 @@ void configcarta(tp_cartas carta){
     case 2:
       printf("Nome: %s\nTipo: Especial\nPoder: %d\nMana: %d\n", carta.nome, carta.power, carta.mana);
 }
-
 }
+
+void imprime_combate(tp_player *jogador, tp_listad *carta, tp_monstro monstro, tp_fila *fila) {
+
+  acoes_monstro acao;  
+  ultima_acao(fila, &acao);
+  
+  printf("====================================================================================\n");
+  printf("Nome: %s                                |Monstro: %s\n", jogador->nome,monstro.name);
+  printf("Vida: %d/200                               |Vida: %d/200\n", jogador->vida,monstro.vida);
+  printf("Mana: %d/50                                 |Escudo: %d/50\n", jogador->mana,monstro.escudo);
+  printf("Escudo: %d/50                                |Proximo Movimento: ", jogador->escudo);
+
+  switch (acao.tipo)
+    {
+    case 0:
+        printf("Ataque\n");
+        break;
+    case 1:
+        printf("Defesa\n");
+        break;
+    case 2:
+        printf("Cura\n");
+        break;
+    default:
+        break;
+    }
+  printf("====================================================================================\n\n");
+  imprime_listad(carta);
+}
+
 //mecânica do combate
 void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte){
     
@@ -117,19 +147,18 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
               break;
             }
 
-            printar_monstro(monstro, &fila_monstro);
-            imprime_player(player, c);
+           imprime_combate(player,c,monstro,&fila_monstro);
 
             printf("Baralho: %d Descarte: %d\n\n", altura_pilha(baralho), altura_pilha(descarte));
 
-            printf("### Digite de 1 a 5 para escolher qual carta vai utilizar. ###\n### Digite 0 para encerrar o turno\n");
+            printf("----- Digite de 1 a 5 para escolher qual carta vai utilizar\n----- Digite 0 para encerrar o turno\n");
             int i;
             scanf("%d", &i);
             if(i==0){
               turno = 0;
               break;
             }
-            if(!busca_listade(c, i-1, &carta_jogar))printf("Não foi possível encontrar essa carta!\n");
+            if(!busca_listade(c, i-1, &carta_jogar))printf("Nao foi possível encontrar essa carta!\n");
             else{
             if(usar_carta(carta_jogar, player, &monstro)){
               push(descarte, carta_jogar);
@@ -157,7 +186,7 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
             }
             break;
           case 1:
-            printf("O monstro usou o escudo e ganhou %d de proteção!\n", acao_monstro.valor);
+            printf("O monstro usou o escudo e ganhou %d de protecao!\n", acao_monstro.valor);
             if(monstro.escudo + acao_monstro.valor > 30)monstro.escudo = 30;
             else{monstro.escudo += acao_monstro.valor;}
             break;
@@ -191,7 +220,7 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
         //VERIFICAR QUEM GANHOU, O JOGADOR OU O MONSTRO
         if(player->vida <= 0){
 
-          printf("Você perdeu no level %d! Deseja continuar? [1 - Sim/2 - Não]\n\n", player->level);
+          printf("Voce perdeu no level %d! Deseja continuar? [1 - Sim/2 - Não]\n\n", player->level);
           int resp;
           scanf("%d", &resp);
           if(resp == 1){
@@ -208,8 +237,10 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
 
         }
         else{
-          printf("teste\n");
-
+          printf("\n-----------------------------------------------------------------------------\n");
+          printf("PARABENS %s, VOCE ACABA DE DERROTAR O PRIMEIRO MONSTRO\n",player->nome);
+          printf("PROXIMO MES VOCE PODERA DERROTAR OS OUTROS MONSTROS E CONCLUIR SUA JORNADA\n");
+          printf("-----------------------------------------------------------------------------\n");
           player->level += 1;
           playerupdate(player, player->nome);
 
@@ -223,5 +254,7 @@ void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *bar
 
     if(level->tipo == 1);
 }
+
+
 
 #endif

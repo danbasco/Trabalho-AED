@@ -153,8 +153,8 @@ void criarmonstro(tp_monstro *monstro, tp_level *level){
   
     char nomes[4][30];
 
-    strcpy(nomes[0], "Careca da Havan");
-    strcpy(nomes[1], "Sagnob");
+    strcpy(nomes[0], "Mafia Chinesa");
+    strcpy(nomes[1], "Elon Musk");
     strcpy(nomes[2], "Aluno do SESI");
     strcpy(nomes[3], "Picos e Vales");
   
@@ -175,34 +175,7 @@ void criarmonstro(tp_monstro *monstro, tp_level *level){
   
 }
 
-void printar_monstro(tp_monstro monstro, tp_fila *fila){
-    
-    acoes_monstro acao;
-    printf("============================================\n");
-    printf("Nome do Montro: %s\n", monstro.name);
-    printf("Vida: %d/200 \n", monstro.vida);
-    printf("Escudo: %d/50 \n\n", monstro.escudo);
-    
-    
-    ultima_acao(fila, &acao);
-    
-    switch (acao.tipo)
-    {
-    case 0:
-        printf("Próximo movimento: Ataque\n\n");
-        break;
-    case 1:
-        printf("Próximo movimento: Defesa\n\n");
-        break;
-    case 2:
-        printf("Próximo movimento: Cura\n\n");
-        break;
-    default:
-        break;
-    }
-    printf("============================================\n\n");
-    
-}
+
 
 #endif
 

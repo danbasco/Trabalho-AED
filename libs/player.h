@@ -3,7 +3,6 @@
 #include "carta.h"
 #include "caminho.h"
 #include "maojogador.h"
-
 #include <stdio.h>
 #include <dirent.h>
 
@@ -59,15 +58,15 @@ int start(tp_player *jogador){
 int menu(tp_player *jogador) {
 
 
-  printf("#####################################################################\n"
-         "#                                                                   #\n" 
-         "#                                                                   #\n" 
-         "#                                                                   #\n" 
-         "#     1- Novo Jogo 2- Carregar Jogo 3- Deletar Jogo 4- Encerrar     #\n" 
-         "#                                                                   #\n" 
-         "#                                                                   #\n" 
-         "#                                                                   #\n" 
-         "#####################################################################\n\n\n");
+  printf("#################################################################################\n"
+         "#                                                                               #\n" 
+         "#                                                                               #\n" 
+         "#                                                                               #\n" 
+         "#     1- Novo Jogo 2- Carregar Jogo 3- Deletar Jogo 4-Instrucoes 5- Encerrar    #\n" 
+         "#                                                                               #\n" 
+         "#                                                                               #\n" 
+         "#                                                                               #\n" 
+         "#################################################################################\n\n\n");
 
   int i, k, pos = 0;
 
@@ -98,7 +97,7 @@ int menu(tp_player *jogador) {
 
     char nome[30];
 
-    printf("Qual será o nome do jogador?\n");
+    printf("Qual sera o nome do jogador? (recomendado nome com 6 caracteres)\n");
     scanf(" %26[^\n]s", nome);
 
 
@@ -122,10 +121,10 @@ int menu(tp_player *jogador) {
   case 2:
     
     saves = opendir(direc);
-    if(!saves)printf("Ocorreu erro ao abrir o diretório dos saves\n");
+    if(!saves)printf("Ocorreu erro ao abrir o diretorio dos saves\n");
 
     pos = 0;
-    printf("######### SAVES #########\n");
+    printf("######### SAVES #########\n\n");
     k = 0;
     while((dir = readdir(saves)) != NULL){
       
@@ -147,12 +146,12 @@ int menu(tp_player *jogador) {
     closedir(saves);
 
     if(pos == 0){
-      printf("Não existe nenhum save para carregar!\n\n");
+      printf("Nao existe nenhum save para carregar!\n\n");
       menu(jogador);
       return 1;
     }
 
-    printf("Digite qual save deseja carregar [1/5]\n");
+    printf("Digite qual save deseja carregar [1/5]\n\n");
     int load;
 
     scanf("%d", &load);
@@ -165,7 +164,10 @@ int menu(tp_player *jogador) {
     if(!carregargame)printf("Ocorreu erro ao abrir o diretório dos saves\n");
     
     carregarjogador(jogador, carregargame);
-    printf("Bem vindo, %s!\n", jogador->nome);
+    printf("------------------------------------------------------\n");
+    printf("Bem Vindo, %s!\n", jogador->nome);
+    printf("Voce esta Adentrando em um Mundo Repleto de Tesouros e Misterios\nDerrote o Seguinte Monstro para Prosseguir:\n");
+    printf("------------------------------------------------------\n");
     return 1;
 
 
@@ -196,27 +198,29 @@ int menu(tp_player *jogador) {
 
       }
 
+    break;
+  
+  case 4:
 
+    printf("----------------------------------------------------------------\n\n");
+    printf("Ao Iniciar o Jogo, seu Deck eh Gerado Aleatoriamente, Contendo Diversas Cartas que Possuem seu Proprio Tipo, podendo ser: Dano, Cura ou Escudo\n\nSeu Objetivo eh Derrotar Todos os Monstros sem Zerar sua Vida!\n Para isso voce Deve Utilizar as Cartas Mencionadas em Seu Deck, Podendo usar Todas ate sua Mana acabar ou Acabar seu Turno!\n\nBoa Sorte Aventureiro!\n\n");
+    printf("----------------------------------------------------------------\n\n");
+    menu(jogador);
+    return 1;
+    break;
 
+  case 5:
+    return 0;
     break;
   default:
 
-    return 0;
+    printf("Caractere Invalido ;-;, Digite outro numero!\n");
+    menu(jogador);
+    return 1;
+    break;
   }
 
 
-}
-
-
-void imprime_player(tp_player *jogador, tp_listad *carta) {
-  printf("============================================\n");
-  printf("Nome: %s\n", jogador->nome);
-  printf("Vida: %d/200 \n", jogador->vida);
-  printf("Mana: %d/50 \n", jogador->mana);
-  printf("Escudo: %d/50 \n", jogador->escudo);
-  printf("============================================\n\n");
-
-  imprime_listad(carta);
 }
 
 int checar_custo(tp_player *jogador, tp_cartas e) {
