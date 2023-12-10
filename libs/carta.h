@@ -118,7 +118,11 @@ int criar_cartas(tp_pilha *pilha, int quant){
 }
 
 void adicionar_cartas(tp_pilha *baralho){
+  
   tp_pilha aux;
+  tp_cartas selec;
+
+  inicializa_pilha(&aux);
   criar_cartas(&aux, 3);
 
   printf("Parabéns, você matou o monstro! Escolha 1 carta para adicionar ao seu baralho!\n");
@@ -129,14 +133,13 @@ void adicionar_cartas(tp_pilha *baralho){
   scanf("%d", &i);
 
   for(int j=0; j<i-1; j++){
-    pop(&aux, NULL);
+    pop(&aux, &selec);
   }
 
-  tp_cartas selec;
   pop(&aux, &selec);
 
   push(baralho, selec);
-
+  printf("A carta %s foi adicionada ao seu deck!\n", selec.nome);
 
 }
 
