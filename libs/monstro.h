@@ -149,60 +149,30 @@ int criar_acoes_monstro(tp_fila *fila){
     return 1;
 }
 
-void criarmonstro(tp_monstro *monstro, tp_level *level){
-  
-    char nomes[4][30];
-
-    strcpy(nomes[0], "Careca da Havan");
-    strcpy(nomes[1], "Sagnob");
-    strcpy(nomes[2], "Aluno do SESI");
-    strcpy(nomes[3], "Picos e Vales");
-  
+void criarmonstro(tp_monstro *monstro, tp_player *player){
+    
     monstro->vida = 200;
     monstro->escudo = 0;
 
-    if(level_atual(level) %5 == 0){
-        monstro->tipo = 1;
-        strcpy(monstro->name, "Embarcadero");
+    if(player->level == 1){
+        strcpy(monstro->name, "Mafia Chinesa");
     }
-    
-    else{
-        monstro->tipo = 0;
-        srand(time(NULL));
-        strcpy(monstro->name, nomes[rand()%3]);
-    
+    if(player->level == 2){
+        strcpy(monstro->name, "Elon Musk");
+    }
+    if(player->level == 3){
+        strcpy(monstro->name, "Aluno do SESI");
+    }
+    if(player->level == 4){
+        strcpy(monstro->name, "Picos e Vales");
+    }
+    if(player->level == 5){
+        strcpy(monstro->name, "Marcio Soussa");
     }
   
 }
 
-void printar_monstro(tp_monstro monstro, tp_fila *fila){
-    
-    acoes_monstro acao;
-    printf("============================================\n");
-    printf("Nome do Montro: %s\n", monstro.name);
-    printf("Vida: %d/200 \n", monstro.vida);
-    printf("Escudo: %d/50 \n\n", monstro.escudo);
-    
-    
-    ultima_acao(fila, &acao);
-    
-    switch (acao.tipo)
-    {
-    case 0:
-        printf("Próximo movimento: Ataque\n\n");
-        break;
-    case 1:
-        printf("Próximo movimento: Defesa\n\n");
-        break;
-    case 2:
-        printf("Próximo movimento: Cura\n\n");
-        break;
-    default:
-        break;
-    }
-    printf("============================================\n\n");
-    
-}
+
 
 #endif
 

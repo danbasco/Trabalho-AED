@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "carta.h"
+#include <windows.h>
 
 //struct da lista duplamente encadeada
 typedef struct tp_no_aux{
@@ -68,7 +69,8 @@ void imprime_listad(tp_listad *lista) {
     else {
         int i = 1;
         tp_no *atu;
-        printf("============== Mão do Jogador ==============\n\n");
+        SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
+        printf("============== Mao do Jogador ==============\n\n");
         atu = lista->ini;
         while (atu != NULL) {
             printf("%d.: %s\n", i, atu->carta.nome);

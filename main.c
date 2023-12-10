@@ -3,14 +3,22 @@
 #include <locale.h>
 #include "libs/maojogador.h"
 #include "libs/combate.h"
-
+#include "libs/caminho.h"
+#include <windows.h>
 
 int main() {
 
     setlocale(LC_ALL,"");
+    
     tp_player player; //Jogador
+    tp_level *caminho;
+
+    caminho = inicializa_level();
+
+    novolevel(&caminho, 0, 0); 
 
 //LOAD DATA
+
     if (start(&player)) {
 
     //Deck
@@ -22,18 +30,8 @@ int main() {
         inicializa_pilha(&cartas_descarte);
         criar_cartas(&cartas_baralho, 10);
 
-
-
-        //imprime_pilha(cartas_baralho);
-    //PRIMEIRO LEVEL
-        tp_level *levels; //caminho do jogador;
-
-        levels = inicializa_level();
-        novolevel(&levels, 1, 0);
-
-
     //INICIANDO COMBATE
-        initcombate(&player, levels, maojogador, &cartas_baralho, &cartas_descarte);
+        initcombate(&player, maojogador, &cartas_baralho, &cartas_descarte,caminho);
 
     }
     return 0;

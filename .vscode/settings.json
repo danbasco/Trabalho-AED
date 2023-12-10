@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "maojogador.h": "c",
+        "combate.h": "c"
+    }
+}
