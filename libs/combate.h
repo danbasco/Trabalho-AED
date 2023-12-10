@@ -6,7 +6,10 @@
 #include "caminho.h"
 #include "maojogador.h"
 #include <string.h>
+<<<<<<< HEAD
 #include <stdlib.h>
+=======
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 
 
 void remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
@@ -115,6 +118,7 @@ void imprime_combate(tp_player *jogador, tp_listad *carta, tp_monstro monstro, t
   imprime_listad(carta);
 }
 
+<<<<<<< HEAD
 
 //Mecânica do combate
 void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte, tp_level *caminho){
@@ -133,6 +137,11 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
 
   else if(caminho->info == 0){
 
+=======
+//mecânica do combate
+void initcombate(tp_player *player, tp_level *level, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte){
+    
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
     if(tamanho_listad(c) == 0)sacar_deck(baralho, c);
      //monstro E suas ações
     inicializa_fila(&fila_monstro); 
@@ -160,8 +169,12 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
           break;
         }
 
+<<<<<<< HEAD
         imprime_combate(player,c,monstro,&fila_monstro);
         printf("Baralho: %d Descarte: %d\n\n", altura_pilha(baralho), altura_pilha(descarte));
+=======
+           imprime_combate(player,c,monstro,&fila_monstro);
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 
         printf("----- Digite de 1 a 5 para escolher qual carta vai utilizar\n----- Digite 0 para encerrar o turno\n");
         
@@ -170,10 +183,29 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
         
         if(i == 230102){
 
+<<<<<<< HEAD
           monstro.vida = 0; //Comando secreto para dar insta kill no monstro, utilizado para testes com o código
           turno = 0; 
           break;
         }
+=======
+            printf("----- Digite de 1 a 5 para escolher qual carta vai utilizar\n----- Digite 0 para encerrar o turno\n");
+            int i;
+            scanf("%d", &i);
+            if(i==0){
+              turno = 0;
+              break;
+            }
+            if(!busca_listade(c, i-1, &carta_jogar))printf("Nao foi possível encontrar essa carta!\n");
+            else{
+            if(usar_carta(carta_jogar, player, &monstro)){
+              push(descarte, carta_jogar);
+              remove_listad(c, i-1);
+            }
+            }
+          } while (turno);
+          //ATAQUE MONSTRO
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 
         if(i==0){
           turno = 0;
@@ -216,9 +248,13 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
             break;
 
           case 1:
+<<<<<<< HEAD
 
             printf("O monstro usou o escudo e ganhou %d de protecao!\n", acao_monstro.valor);
 
+=======
+            printf("O monstro usou o escudo e ganhou %d de protecao!\n", acao_monstro.valor);
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
             if(monstro.escudo + acao_monstro.valor > 30)monstro.escudo = 30;
             else{monstro.escudo += acao_monstro.valor;}
 
@@ -312,6 +348,7 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
             initcombate(player, c, baralho, descarte,caminho);
           }
 
+<<<<<<< HEAD
           else{
             
             caminho->info = 0;
@@ -320,6 +357,16 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
             novolevel(&caminho, player->level, 0);
             initcombate(player, c, baralho, descarte,caminho);
             
+=======
+        }
+        else{
+          printf("\n-----------------------------------------------------------------------------\n");
+          printf("PARABENS %s, VOCE ACABA DE DERROTAR O PRIMEIRO MONSTRO\n",player->nome);
+          printf("PROXIMO MES VOCE PODERA DERROTAR OS OUTROS MONSTROS E CONCLUIR SUA JORNADA\n");
+          printf("-----------------------------------------------------------------------------\n");
+          player->level += 1;
+          playerupdate(player, player->nome);
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 
           }
 
@@ -356,6 +403,9 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
 
 
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 #endif
