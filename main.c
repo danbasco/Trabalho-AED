@@ -3,15 +3,11 @@
 #include <locale.h>
 #include "libs/maojogador.h"
 #include "libs/combate.h"
-<<<<<<< HEAD
 #include "libs/caminho.h"
-=======
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
 #include <windows.h>
 
 int main() {
 
-    SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 14);
     setlocale(LC_ALL,"");
     
     tp_player player; //Jogador

@@ -149,20 +149,8 @@ int criar_acoes_monstro(tp_fila *fila){
     return 1;
 }
 
-<<<<<<< HEAD
 void criarmonstro(tp_monstro *monstro, tp_player *player){
     
-=======
-void criarmonstro(tp_monstro *monstro, tp_level *level){
-  
-    char nomes[4][30];
-
-    strcpy(nomes[0], "Mafia Chinesa");
-    strcpy(nomes[1], "Elon Musk");
-    strcpy(nomes[2], "Aluno do SESI");
-    strcpy(nomes[3], "Picos e Vales");
-  
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
     monstro->vida = 200;
     monstro->escudo = 0;
 

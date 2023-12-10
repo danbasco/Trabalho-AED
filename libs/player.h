@@ -59,11 +59,7 @@ int start(tp_player *jogador){
 
 int menu(tp_player *jogador) {
 
-<<<<<<< HEAD
   
-=======
-
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
   printf("#################################################################################\n"
          "#                                                                               #\n" 
          "#                                                                               #\n" 
@@ -154,10 +150,7 @@ int menu(tp_player *jogador) {
     closedir(saves);
   
     if(pos == 0){
-<<<<<<< HEAD
       
-=======
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
       printf("Nao existe nenhum save para carregar!\n\n");
       menu(jogador);
       return 1;
@@ -222,11 +215,7 @@ int menu(tp_player *jogador) {
 
     printf("Digite qual save deseja deletar [1/5]\n\n");
 
-    break;
-  
-  case 4:
 
-<<<<<<< HEAD
     scanf("%d", &load);
     strcat(direc, names_save[load - 1]);
 
@@ -251,24 +240,12 @@ int menu(tp_player *jogador) {
     return 1;
     break;
 
-=======
-    printf("----------------------------------------------------------------\n\n");
-    printf("Ao Iniciar o Jogo, seu Deck eh Gerado Aleatoriamente, Contendo Diversas Cartas que Possuem seu Proprio Tipo, podendo ser: Dano, Cura ou Escudo\n\nSeu Objetivo eh Derrotar Todos os Monstros sem Zerar sua Vida!\n Para isso voce Deve Utilizar as Cartas Mencionadas em Seu Deck, Podendo usar Todas ate sua Mana acabar ou Acabar seu Turno!\n\nBoa Sorte Aventureiro!\n\n");
-    printf("----------------------------------------------------------------\n\n");
-    menu(jogador);
-    return 1;
-    break;
-
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
   case 5:
     return 0;
     break;
   default:
 
-<<<<<<< HEAD
     system("cls");
-=======
->>>>>>> c628fc26a7f04334627d260f514d07b2a4298e70
     printf("Caractere Invalido ;-;, Digite outro numero!\n");
     menu(jogador);
     return 1;
