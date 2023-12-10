@@ -7,7 +7,7 @@
 #include <dirent.h>
 
 #include <conio.h>
-
+#include "utils.h"
 #include "arte.h"
 
 typedef struct {
@@ -24,10 +24,49 @@ void criarplayer(tp_player *jogador) {
   
 }
 
+int cartasupdate(tp_player *jogador, tp_cartas carta, int modo){
+  
+  char direcartas[100] = "./data/player/";
+
+  strcat(direcartas, jogador->nome);
+  strcat(direcartas, "_save");
+  strcat(direcartas, ".txt");
+
+  FILE *savecartas = fopen(direcartas, "a");
+
+  switch (modo)
+  {
+  case 1:
+    fprintf(savecartas, "Carta usada: %s Nivel: %d\n", carta.nome, jogador->level);
+    break;
+  case 2:
+    char linha[100];
+    while(fscanf(savecartas, " %[^\n]s", linha)){
+      printf("%s", linha);
+    }
+  default:
+    break;
+  }
+  
+  fclose(savecartas);
+
+
+}
+
+
+
+
 int playerupdate(tp_player *jogador, char *nome){
+  
   char direc[60] = "./data/player/";
+
   strcat(direc, nome);
+  
+
+  
   strcat(direc, ".dat");
+
+  
 
   FILE *update = fopen(direc, "w+");
   if(!update)return 0;
@@ -35,6 +74,8 @@ int playerupdate(tp_player *jogador, char *nome){
   strcpy(jogador->nome, nome);
   fprintf(update, "%s\n", jogador->nome);
   fprintf(update, "%d %d %d %d\n", jogador->vida, jogador->mana, jogador->escudo, jogador->level);
+
+
 
   fclose(update);
 
@@ -59,6 +100,7 @@ int start(tp_player *jogador){
 
 int menu(tp_player *jogador) {
 
+  clear();
   
   printf("#################################################################################\n"
          "#                                                                               #\n" 
@@ -84,15 +126,16 @@ int menu(tp_player *jogador) {
   {
   case 1:
 
-    system("cls");
+  
   //VERIFICAR SE POSSUI MAIS DE 5 SAVES
     pos = 0;
     saves = opendir(direc);
     while((dir = readdir(saves)) != NULL){
-      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a')pos++;
+      if(strstr(dir->d_name, ".dat"))pos++;
     }
     if(pos==5){
-      printf("Limite Máximo de 5 saves atingido!\n\n\n");
+      printColoredText("\n\nLimite Máximo de 5 saves atingido!\n", COLOR_RED);
+      Sleep(5000);
       menu(jogador);
       return 1;
     }
@@ -118,40 +161,48 @@ int menu(tp_player *jogador) {
 
     printf("Bem vindo, %s!\n", jogador->nome);
 
+    
+    printColoredText("------------------------------------------------------\n", COLOR_CYAN);
+    printf("%sBem Vindo, %s%s%s!\n", COLOR_CYAN, COLOR_GREEN, jogador->nome, COLOR_CYAN);
+    Sleep(UM);
+    printColoredText("Voce esta Adentrando em um Mundo Repleto de Tesouros e Misterios\n", COLOR_CYAN);
+    Sleep(DOIS);
+    printColoredText("Derrote o Seguinte Monstro para Prosseguir:\n------------------------------------------------------\n", COLOR_CYAN);
+    Sleep(5000);
+
     return 1;
     break;
   
   case 2:
     
-    system("cls");
+    clear();
     saves = opendir(direc);
     if(!saves)printf("Ocorreu erro ao abrir o diretorio dos saves\n");
 
     pos = 0;
     printf("######### SAVES #########\n\n");
-    k = 0;
+
     while((dir = readdir(saves)) != NULL){
       
       if(pos == 5)break;
-
-      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a'){
-
-        strcpy(names_save[k], dir->d_name);
+      int level;
+      if(strstr(dir->d_name, ".dat")){
 
         printf("%d.: ", pos+1);
         for(int i=0; i<strlen(dir->d_name)-4; i++)printf("%c", dir->d_name[i]);
-        printf("\n\n");
+        printf("\n");
         pos++;
-        k++;
-        }
 
+        }
 
     }
     closedir(saves);
-  
+
+    printf("\n\n");
     if(pos == 0){
       
-      printf("Nao existe nenhum save para carregar!\n\n");
+      printColoredText("Nao existe nenhum save para carregar!\n\n", COLOR_GREEN);
+      Sleep(5000);
       menu(jogador);
       return 1;
     }
@@ -162,21 +213,31 @@ int menu(tp_player *jogador) {
     scanf("%d", &load);
     strcat(direc, names_save[load-1]);
 
-    FILE *carregargame = fopen(direc, "r");;
+    FILE *carregargame = fopen(direc, "r");
 
-    if(!carregargame)printf("Ocorreu erro ao abrir o diretório dos saves\n");
+    if(!carregargame){
+      printColoredText("Nao foi possivel carregar o save! Por favor, tente novamente!\n", COLOR_RED);
+      Sleep(5000);
+      menu(jogador);
+      return 1;
+    }
     
+    clear();
     carregarjogador(jogador, carregargame);
-    printf("------------------------------------------------------\n");
-    printf("Bem Vindo, %s!\n", jogador->nome);
-    printf("Voce esta Adentrando em um Mundo Repleto de Tesouros e Misterios\nDerrote o Seguinte Monstro para Prosseguir:\n");
-    printf("------------------------------------------------------\n");
+    
+    printColoredText("------------------------------------------------------\n", COLOR_CYAN);
+    printf("%sBem Vindo, %s%s%s!\n", COLOR_CYAN, COLOR_GREEN, jogador->nome, COLOR_CYAN);
+    Sleep(UM);
+    printColoredText("Voce esta Adentrando em um Mundo Repleto de Tesouros e Misterios\n", COLOR_CYAN);
+    Sleep(DOIS);
+    printColoredText("Derrote o Seguinte Monstro para Prosseguir:\n------------------------------------------------------\n", COLOR_CYAN);
+    Sleep(DOIS);
     return 1;
 
 
   case 3:
     
-    system("cls");
+    clear();
     saves = opendir(direc);
        if (!saves)
       printf("Ocorreu erro ao abrir o diretorio dos saves\n");
@@ -232,10 +293,16 @@ int menu(tp_player *jogador) {
   
   case 4:
 
-    system("cls");
-    printf("----------------------------------------------------------------\n\n");
-    printf("Ao Iniciar o Jogo, seu Deck eh Gerado Aleatoriamente, Contendo Diversas Cartas que Possuem seu Proprio Tipo, podendo ser: Dano, Cura ou Escudo\n\nSeu Objetivo eh Derrotar Todos os Monstros sem Zerar sua Vida!\n Para isso voce Deve Utilizar as Cartas Mencionadas em Seu Deck, Podendo usar Todas ate sua Mana acabar ou Acabar seu Turno!\n\nBoa Sorte Aventureiro!\n\n");
-    printf("----------------------------------------------------------------\n\n");
+    clear();
+    printColoredText("----------------------------------------------------------------\n\n", COLOR_CYAN);
+    printColoredText("Ao Iniciar o Jogo, seu Deck eh Gerado Aleatoriamente, Contendo Diversas Cartas que Possuem seu Proprio Tipo, podendo ser: Dano, Cura ou Escudo\n\n", COLOR_CYAN);
+    Sleep(DOIS);
+    printColoredText("Seu Objetivo eh Derrotar Todos os Monstros sem Zerar sua Vida!\n Para isso voce Deve Utilizar as Cartas Mencionadas em Seu Deck, Podendo usar Todas ate sua Mana acabar ou Acabar seu Turno!", COLOR_CYAN);
+    Sleep(DOIS);
+    printColoredText("\n\nBoa Sorte Aventureiro!\n\n", COLOR_CYAN);
+    printColoredText("----------------------------------------------------------------\n\n", COLOR_CYAN);
+    printColoredText("Digite qualquer tecla para voltar ao menu...", COLOR_YELLOW);
+    getch();
     menu(jogador);
     return 1;
     break;

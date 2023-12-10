@@ -155,19 +155,25 @@ void criarmonstro(tp_monstro *monstro, tp_player *player){
     monstro->escudo = 0;
 
     if(player->level == 1){
+        monstro->tipo = 0;
         strcpy(monstro->name, "Mafia Chinesa");
     }
     if(player->level == 2){
+        monstro->tipo = 0;
         strcpy(monstro->name, "Elon Musk");
     }
     if(player->level == 3){
+        monstro->tipo = 0;
         strcpy(monstro->name, "Aluno do SESI");
     }
     if(player->level == 4){
+        monstro->tipo = 0;
         strcpy(monstro->name, "Picos e Vales");
     }
     if(player->level == 5){
         strcpy(monstro->name, "Marcio Soussa");
+        monstro->tipo = 1;
+        monstro->vida = 400;
     }
   
 }

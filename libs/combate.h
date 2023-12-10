@@ -93,7 +93,8 @@ void imprime_combate(tp_player *jogador, tp_listad *carta, tp_monstro monstro, t
   
   printf("====================================================================================\n");
   printf("Nome: %s                                |Monstro: %s\n", jogador->nome,monstro.name);
-  printf("Vida: %d/200                               |Vida: %d/200\n", jogador->vida,monstro.vida);
+  if(monstro.tipo == 1)printf("Vida: %d/200                               |Vida: %d/400\n", jogador->vida,monstro.vida);
+  else printf("Vida: %d/200                               |Vida: %d/200\n", jogador->vida,monstro.vida);
   printf("Mana: %d/50                                 |Escudo: %d/50\n", jogador->mana,monstro.escudo);
   printf("Escudo: %d/50                                |Proximo Movimento: ", jogador->escudo);
 
@@ -119,7 +120,7 @@ void imprime_combate(tp_player *jogador, tp_listad *carta, tp_monstro monstro, t
 //Mecânica do combate
 void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *descarte, tp_level *caminho){
 
-  imprime_caminho(caminho);
+  clear();
 
   tp_monstro monstro;
   tp_fila fila_monstro; acoes_monstro acao_monstro;
@@ -182,8 +183,11 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
 
         if(!busca_listade(c, i-1, &carta_jogar))printf("Nao foi possível encontrar essa carta!\n"); //Não encontrou a carta do jogador
         else{
-
+          
           if(usar_carta(carta_jogar, player, &monstro)){ //Verifica se tem mana o suficiente para jogar e usa a carta
+
+            cartasupdate(player, carta_jogar, 1);
+
             push(descarte, carta_jogar);
             remove_listad(c, i-1);
           }
