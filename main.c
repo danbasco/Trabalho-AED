@@ -12,7 +12,8 @@ int main() {
     
     tp_player player; //Jogador
     tp_level *caminho;
-
+    
+    
     caminho = inicializa_level();
 
     novolevel(&caminho, 0, 0); 

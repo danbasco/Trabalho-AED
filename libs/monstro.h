@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+#include "utils.h"
+
 #define MAXF 10
 
 typedef struct {

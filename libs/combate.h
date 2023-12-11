@@ -8,6 +8,8 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include "arte.h"
+
 
 void remover_descarte(tp_pilha *descarte, tp_pilha *baralho, tp_listad *c){  
   int size = altura_pilha(descarte);
@@ -127,8 +129,9 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
   tp_cartas carta_jogar;
 
 
-  if(player->level == 6){
-    printf("Voce ganhou o jogo! Parabens!!!\n\n");
+  if(player->level == 6){//Cena final do jogo
+    dialogo_final();
+
   }
 
 
@@ -137,9 +140,58 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
     if(tamanho_listad(c) == 0)sacar_deck(baralho, c);
      //monstro E suas ações
     inicializa_fila(&fila_monstro); 
-        
+    
+    const LPCSTR monstermsc;
     criarmonstro(&monstro, player); //Criando o monstro
     criar_acoes_monstro(&fila_monstro);
+    
+    switch (player->level)
+    {
+    case 1:
+        const LPCSTR song1 = "./sounds/monstro1.wav";
+        PlaySound(song1, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+        break;
+
+      case 2:
+
+        const LPCSTR song2 = "./sounds/monstro2.wav";
+        PlaySound(song2, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+        break;
+        
+      case 3:
+        const LPCSTR song3 = "./sounds/monstro3.wav";
+        PlaySound(song3, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+        break;
+      case 4:
+        const LPCSTR song4 = "./sounds/monstro4.wav";
+        PlaySound(song4, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+        break;
+      case 5:
+
+        printColoredText("Espera...", COLOR_CYAN);
+        Sleep(TRES);
+
+        clear();
+        printColoredText("Tem algo de errado...", COLOR_CYAN);
+      
+        clear();
+        printColoredText("Tem algo de errado... Entao, esse é o fim?", COLOR_CYAN);
+        Sleep(TRES);
+
+        clear();
+
+        const LPCSTR passos = "./sounds/passos.wav";
+        PlaySound(passos, NULL, SND_ASYNC | SND_FILENAME);
+        
+
+        const LPCSTR song5 = "./sounds/bossfinal.wav";
+        Sleep(5000);
+        PlaySound(song5, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+        break;
+    
+      default:
+        break;
+    }
 
     int turno;
 
@@ -187,7 +239,7 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
           if(usar_carta(carta_jogar, player, &monstro)){ //Verifica se tem mana o suficiente para jogar e usa a carta
 
             cartasupdate(player, carta_jogar, 1);
-
+            clear();
             push(descarte, carta_jogar);
             remove_listad(c, i-1);
           }
@@ -269,7 +321,8 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
 
             player->vida = 200;
             monstro.vida = 200;
-
+            
+            caminho->existe.desvio = true;
             initcombate(player, c, baralho, descarte,caminho); //Recursividade para chamar o combate novamente
 
             }
@@ -281,11 +334,15 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
           }
       }else{
           
+          player->level += 1;
+          playerupdate(player, player->nome);
+
+          if(player->level != 6){
           printf("\n-----------------------------------------------------------------------------\n");
           printf("Parabens %s, Voce acaba de derrotar o monstro -%s-!\n",player->nome, monstro.name);
           printf("-----------------------------------------------------------------------------\n");
 
-          player->level += 1; //Atualiza o level do player
+           //Atualiza o level do player
           
           playerupdate(player, player->nome);
           adicionar_cartas(baralho); // VERIFICAR ERRO AQUI
@@ -326,18 +383,38 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
             
 
           }
+        }
+        else{
+          dialogo_final();
+        }
 
       }
 
   }
 
-
   else if(caminho->info == 1 && player->level != 6){
 
+    const LPCSTR parada = "./sounds/break.wav";
+    PlaySound(parada, NULL, SND_ASYNC | SND_FILENAME);
     player->vida = 200;
     player->mana = 50;
 
-    printf("Voce encontrou um quarto abandonado e resolveu tirar um cochilo - Vida e mana Recuperadas! - \n");
+    clear();
+
+    printColoredText("Voce encontrou um quarto abandonado e resolveu tirar um cochilo.", COLOR_GREEN);
+    Sleep(UM);
+    clear();
+    
+    printColoredText("Voce encontrou um quarto abandonado e resolveu tirar um cochilo..", COLOR_GREEN);
+    Sleep(UM);
+    clear();
+    
+    printColoredText("Voce encontrou um quarto abandonado e resolveu tirar um cochilo...", COLOR_GREEN);
+    Sleep(UM);
+    clear();
+    
+    printColoredText("Voce encontrou um quarto abandonado e resolveu tirar um cochilo... Vida e mana recuperadas!", COLOR_GREEN);
+    Sleep(TRES);
 
     caminho->info = 0;
     caminho->existe.desvio = true;

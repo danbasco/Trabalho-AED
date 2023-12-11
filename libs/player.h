@@ -93,7 +93,8 @@ void carregarjogador(tp_player *jogador, FILE *arquivo){
 }
 
 int start(tp_player *jogador){
-  asciiart();
+  //text();
+  //asciiart();
   menu(jogador);
 }
 
@@ -102,7 +103,9 @@ int menu(tp_player *jogador) {
 
   clear();
   
-  printf("#################################################################################\n"
+  const LPCSTR menusong = "./sounds/menu.wav";
+  PlaySound(menusong, NULL, SND_ASYNC | SND_LOOP | SND_FILENAME);
+  printColoredText("#################################################################################\n"
          "#                                                                               #\n" 
          "#                                                                               #\n" 
          "#                                                                               #\n" 
@@ -110,7 +113,7 @@ int menu(tp_player *jogador) {
          "#                                                                               #\n" 
          "#                                                                               #\n" 
          "#                                                                               #\n" 
-         "#################################################################################\n\n\n");
+         "#################################################################################\n\n\n", COLOR_YELLOW);
 
   int i, k, pos = 0;
 
@@ -121,7 +124,7 @@ int menu(tp_player *jogador) {
 
   DIR *saves;
   struct dirent *dir;
-
+  const LPCSTR parada = "./sounds/break.wav";
   switch (i)
   {
   case 1:
@@ -159,8 +162,6 @@ int menu(tp_player *jogador) {
 
     if(!playerupdate(jogador, nome))printf("Ocorreu algum erro ao atualizar o jogador.\n");
 
-    printf("Bem vindo, %s!\n", jogador->nome);
-
     
     printColoredText("------------------------------------------------------\n", COLOR_CYAN);
     printf("%sBem Vindo, %s%s%s!\n", COLOR_CYAN, COLOR_GREEN, jogador->nome, COLOR_CYAN);
@@ -170,6 +171,8 @@ int menu(tp_player *jogador) {
     printColoredText("Derrote o Seguinte Monstro para Prosseguir:\n------------------------------------------------------\n", COLOR_CYAN);
     Sleep(5000);
 
+    
+    PlaySound(parada, NULL, SND_ASYNC | SND_FILENAME);
     return 1;
     break;
   
@@ -181,28 +184,29 @@ int menu(tp_player *jogador) {
 
     pos = 0;
     printf("######### SAVES #########\n\n");
-
+    k = 0;
     while((dir = readdir(saves)) != NULL){
       
       if(pos == 5)break;
-      int level;
-      if(strstr(dir->d_name, ".dat")){
+
+      if(dir->d_name[strlen(dir->d_name)-1] == 't' && dir->d_name[strlen(dir->d_name)-2] == 'a'){
+
+        strcpy(names_save[k], dir->d_name);
 
         printf("%d.: ", pos+1);
         for(int i=0; i<strlen(dir->d_name)-4; i++)printf("%c", dir->d_name[i]);
-        printf("\n");
+        printf("\n\n");
         pos++;
-
+        k++;
         }
+
 
     }
     closedir(saves);
 
-    printf("\n\n");
     if(pos == 0){
-      
-      printColoredText("Nao existe nenhum save para carregar!\n\n", COLOR_GREEN);
-      Sleep(5000);
+      printColoredText("Nao existe nenhum save para carregar!\n\n", COLOR_RED);
+      Sleep(3000);
       menu(jogador);
       return 1;
     }
@@ -213,14 +217,11 @@ int menu(tp_player *jogador) {
     scanf("%d", &load);
     strcat(direc, names_save[load-1]);
 
-    FILE *carregargame = fopen(direc, "r");
+    printf("%s\n", direc);
 
-    if(!carregargame){
-      printColoredText("Nao foi possivel carregar o save! Por favor, tente novamente!\n", COLOR_RED);
-      Sleep(5000);
-      menu(jogador);
-      return 1;
-    }
+    FILE *carregargame = fopen(direc, "r");;
+
+    if(!carregargame)printf("Ocorreu erro ao abrir o diretório dos saves\n");
     
     clear();
     carregarjogador(jogador, carregargame);
@@ -232,6 +233,7 @@ int menu(tp_player *jogador) {
     Sleep(DOIS);
     printColoredText("Derrote o Seguinte Monstro para Prosseguir:\n------------------------------------------------------\n", COLOR_CYAN);
     Sleep(DOIS);
+    PlaySound(parada, NULL, SND_ASYNC | SND_FILENAME);
     return 1;
 
 
