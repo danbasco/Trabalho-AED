@@ -93,8 +93,8 @@ void carregarjogador(tp_player *jogador, FILE *arquivo){
 }
 
 int start(tp_player *jogador){
-  //text();
-  //asciiart();
+  text();
+  asciiart();
   menu(jogador);
 }
 

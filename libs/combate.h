@@ -345,7 +345,7 @@ void initcombate(tp_player *player, tp_listad *c, tp_pilha *baralho, tp_pilha *d
            //Atualiza o level do player
           
           playerupdate(player, player->nome);
-          adicionar_cartas(baralho); // VERIFICAR ERRO AQUI
+         // adicionar_cartas(baralho); // VERIFICAR ERRO AQUI
           
           //so vai entrar nessa condicao aqui
           
